@@ -1,3 +1,5 @@
+## For Android
+
 # built application files
 *.apk
 *.ap_
@@ -18,3 +20,27 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+## For C/C++
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Object files
+*.o
+*.slo
+*.lo
+
+# Libraries
+*.lib
+*.a
+*.lai
+*.la
+
+# Executables
+*.exe
+*.out
+*.app
