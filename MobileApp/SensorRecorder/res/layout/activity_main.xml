@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/activity0_sectionPadding" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_FileNameSection"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity0_FileNameHint"
+            android:ems="10" >
+
+        </EditText>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/recording_textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_AvailableSensors"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <CheckBox
+            android:id="@+id/SelectAccelerometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_Accelerometer" />
+
+        <CheckBox
+            android:id="@+id/SelectGyroscope"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_Gyroscope" />
+
+        <CheckBox
+            android:id="@+id/SelectCompass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_MagneticField" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="@dimen/activity0_buttonMargin" >
+
+        <Button
+            android:id="@+id/button1"
+            android:onClick="readyToRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity0_startButton" />
+        <requestFocus />
+    </LinearLayout>
+
+</LinearLayout>
