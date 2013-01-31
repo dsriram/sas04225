@@ -54,9 +54,9 @@ recording_accel=recording_gyro=recording_magnetic = false;
 		recording_accel=sensor_recorded[0];
 		recording_gyro=sensor_recorded[1];
 		recording_magnetic=sensor_recorded[2];
-		sampling_rate = new int[3];
 		sample_count = new int[3];
 		sample_count[0]=sample_count[1]=sample_count[2]=0;
+		sampling_rate = new int[3];
 		
 		String file_name = start_intent.getStringExtra("filename");
 		
