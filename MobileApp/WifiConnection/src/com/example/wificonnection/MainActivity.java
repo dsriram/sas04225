@@ -4,6 +4,7 @@ package com.example.wificonnection;
 
 
 import java.util.List;
+import org.sas04225.wificonnection.R;
 
 
 import android.os.Bundle;
@@ -22,59 +23,55 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	
+	private WifiManager wifi;
+	
+	private long TIMEOUT = 8000;
+	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 			
 		 setContentView(R.layout.activity_main);
-		 final TextView Res = new TextView(this);
-		 final TextView Res1 = new TextView(this);
-
-         final Button button = (Button) findViewById(R.id.menu_settings);
-         button.setText("SCAN");
-        		
-             try {
-                 Thread.sleep(4000);
-             } catch (InterruptedException e) {
-                 // TODO Auto-generated catch block
-                 e.printStackTrace();
-             }
-             Log.d("PROJECT1","Wifi WAITING");
+		 final TextView Res = (TextView) findViewById(R.id.textView1);
+		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+         final Button button = (Button) findViewById(R.id.buttonScan);
+         Toast toast = Toast.makeText(getApplicationContext(),  "Sleep time: "+this.TIMEOUT+"ms", Toast.LENGTH_SHORT);
+     	toast.show();
          
          button.setOnClickListener(new View.OnClickListener() {
             
 
 			public void onClick(View v) {
-            	WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             	wifi.startScan();
-            	Context context = getApplicationContext();
-            	CharSequence text = "SCANNING....PLS WAIT!!!";
-            	int duration = Toast.LENGTH_LONG;
-
-            	Toast toast = Toast.makeText(context, text, duration);
+            	Toast toast = Toast.makeText(getApplicationContext(),  "SCANNING....PLS WAIT!!!", Toast.LENGTH_SHORT);
             	toast.show();
-            	 List<ScanResult> wifiList = wifi.getScanResults();
-            	 String BSS=null;
-            	 String SSD=null;
-            	 for (int i = 0; i < wifiList.size(); i++) {
-                     ScanResult scanResult = wifiList.get(i);
-                     BSS = scanResult.BSSID;
-                     SSD = scanResult.SSID;
-                     
-                                         
-                     SSD+= scanResult.SSID+"\n";
-                     BSS+= scanResult.BSSID+"\n";
-                     
-                    
-
-
             	
+            	Log.d("PROJECT1","Wifi WAITING");
+                
+            	
+            	 try {
+                     Thread.sleep(TIMEOUT);
+                 } catch (InterruptedException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                 }
             	 
-            	 
+            	 List<ScanResult> wifiList = wifi.getScanResults();
+            	 String BSSID="";
+            	 String SSID="";
+            	 String RSSID="";
+            	 String disp = "";
+            	 for (int i = 0; i < wifiList.size(); i++) {
+                     ScanResult scanResult = wifiList.get(i);                  
+                     SSID = scanResult.SSID;
+                     BSSID = scanResult.BSSID;
+                     RSSID = ""+scanResult.level;
+                     disp += SSID+"  "+BSSID+" "+RSSID+"\n";
                  // Perform action on click
              }
-            	 Res.setText(SSD);
-            	 Res1.setText(BSS);
+            	 Res.setText(disp);
+            	 Log.i("Scan Results:", disp);
          }});
      }
  
@@ -83,7 +80,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		//getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 

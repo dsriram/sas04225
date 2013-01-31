@@ -4,12 +4,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <button android:id="@+id/buttonScan"
-        android:layout_centerInParent="true"
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="23dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        
-       />
-    
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="@string/scan_button" />
 
 </RelativeLayout>
