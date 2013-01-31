@@ -4,8 +4,9 @@ function [ timestamp, data,count ] = read_sensor_data( filename )
 
 fid = fopen(filename,'r','b'); % filename, read-only-mode, big-endian-format
 fileinfo = dir(filename);
-filesize = fileinfo.bytes;
 maxCount = filesize/20;
+filesize = fileinfo.bytes;
+
 timestamp = int64(zeros([maxCount 1]));
 data = zeros([maxCount 3]);
 for i=1:maxCount
