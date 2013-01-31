@@ -1,4 +1,4 @@
-package com.example.wificonnection;
+package org.sas04225.wificonnection;
 
 
 
