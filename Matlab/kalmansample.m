@@ -2,6 +2,7 @@ x  = 0.1*randn(1,500); % Input to the filter
 b  = fir1(31,0.5);     % FIR system to be identified
 t=0.02:0.02:10;
 d  =sin(2*pi*t);    % Desired signal
+x = awgn (d,2); % SNR= -10dB
 w0 = zeros(1,32);      % Intial filter coefficients
 k0 = 0.5*eye(32);      % Initial state error correlation matrix
 qm = 2;                % Measurement noise covariance
