@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
          button.setText("SCAN");
         		
              try {
-                 Thread.sleep(4000);
+                 Thread.sleep(200);
              } catch (InterruptedException e) {
                  // TODO Auto-generated catch block
                  e.printStackTrace();
@@ -54,17 +54,16 @@ public class MainActivity extends Activity {
             	Toast toast = Toast.makeText(context, text, duration);
             	toast.show();
             	 List<ScanResult> wifiList = wifi.getScanResults();
-            	 String BSS;
-            	 String SSD;
+            	 String BSS=null;
+            	 String SSD=null;
             	 for (int i = 0; i < wifiList.size(); i++) {
                      ScanResult scanResult = wifiList.get(i);
                      BSS = scanResult.BSSID;
                      SSD = scanResult.SSID;
                      
                                          
-                     Res.setText(SSD);
-                     Res1.setText(BSS);
-                     
+                     SSD+= scanResult.SSID+"\n";
+                     BSS+= scanResult.BSSID+"\n";
                      
                     
 
@@ -74,6 +73,8 @@ public class MainActivity extends Activity {
             	 
                  // Perform action on click
              }
+            	 Res.setText(SSD);
+            	 Res1.setText(BSS);
          }});
      }
  
