@@ -5,16 +5,19 @@ package com.example.wificonnection;
 
 import java.util.List;
 
+
 import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Context;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.net.wifi.*;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -24,9 +27,20 @@ public class MainActivity extends Activity {
 		super.onCreate(icicle);
 			
 		 setContentView(R.layout.activity_main);
+		 final TextView Res = new TextView(this);
+		 final TextView Res1 = new TextView(this);
 
          final Button button = (Button) findViewById(R.id.menu_settings);
          button.setText("SCAN");
+        		
+             try {
+                 Thread.sleep(200);
+             } catch (InterruptedException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+             }
+             Log.d("PROJECT1","Wifi WAITING");
+         
          button.setOnClickListener(new View.OnClickListener() {
             
 
@@ -46,20 +60,10 @@ public class MainActivity extends Activity {
                      ScanResult scanResult = wifiList.get(i);
                      BSS = scanResult.BSSID;
                      SSD = scanResult.SSID;
-                     Context context1 = getApplicationContext();
-                 	String text1 = BSS;
-                 	int duration1 = Toast.LENGTH_LONG;
-
-                 	Toast toast1 = Toast.makeText(context1, text1, duration1);
-                 	toast1.show();
-                 	Context context2 = getApplicationContext();
-                	CharSequence text2 = SSD;
-                	int duration2 = Toast.LENGTH_LONG;
-
-                	Toast toast2 = Toast.makeText(context2, text2, duration2);
-                	toast2.show();
                      
-                     
+                                         
+                     Res.setText(SSD);
+                     Res1.setText(BSS);
                      
                      
                     
