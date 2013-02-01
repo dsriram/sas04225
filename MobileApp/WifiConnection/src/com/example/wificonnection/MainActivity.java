@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
          button.setText("SCAN");
         		
              try {
-                 Thread.sleep(200);
+                 Thread.sleep(4000);
              } catch (InterruptedException e) {
                  // TODO Auto-generated catch block
                  e.printStackTrace();
