@@ -44,7 +44,7 @@ public class Recording extends Activity {
 		// Show the Up button in the action bar.
 		//getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-recording_accel=recording_gyro=recording_magnetic = false;
+		recording_accel=recording_gyro=recording_magnetic = false;
 		
 		chrmtr = (Chronometer) findViewById(R.id.chronometer1);
 		sManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
@@ -139,21 +139,27 @@ recording_accel=recording_gyro=recording_magnetic = false;
 		ProgressBar progress = (ProgressBar)findViewById(R.id.progressBar1);
 		progress.setIndeterminate(true);
 		chrmtr.start();
+		String text = "";
 		if(recording_accel)
 		{
 			Log.i("Started Recording","Accelerometer @ "+sampling_rate[0]+" samples/s");
+			text += "Accelerometer @ "+sampling_rate[0]+" samples/s"+"\n";
 			sManager.registerListener(accel, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
 		}
 		if(recording_gyro)
 		{
 			Log.i("Started Recording","Gyroscope @ "+sampling_rate[1]+" samples/s");
+			text += "Gyroscope @ "+sampling_rate[1]+" samples/s"+"\n";
 			sManager.registerListener(gyro, gyroscope, SensorManager.SENSOR_DELAY_FASTEST);
 		}
 		if(recording_magnetic)
 		{
 			Log.i("Started Recording","MagneticField @ "+sampling_rate[2]+" samples/s");
+			text += "MagneticField @ "+sampling_rate[2]+" samples/s";
 			sManager.registerListener(magnetic, magneticSensor, SensorManager.SENSOR_DELAY_FASTEST);
 		}
+		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 		recording_now = true;
 		wl.acquire();
 	}
@@ -177,10 +183,10 @@ recording_accel=recording_gyro=recording_magnetic = false;
 		unRegisterSensorEventListeners();
 		closeFiles();
 		Log.i("Sample count:", "Accel: "+sample_count[0]+" Gyro: "+sample_count[1]+" Mag: "+sample_count[2]);
-CharSequence text = "ACCELOMETER READING:"+sample_count[0]+"\n GYROMETER READING:"+sample_count[1]+"\nMAGNETIC FIELD:"+sample_count[2];
+		CharSequence text = "ACCELOMETER READING:"+sample_count[0]+"\n GYROMETER READING:"+sample_count[1]+"\nMAGNETIC FIELD:"+sample_count[2];
 		int duration = Toast.LENGTH_SHORT;
-Toast toast = Toast.makeText(context, text, duration);
-toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 		toast.show();
 		super.onStop();
 	}
