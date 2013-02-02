@@ -177,6 +177,10 @@ recording_accel=recording_gyro=recording_magnetic = false;
 		unRegisterSensorEventListeners();
 		closeFiles();
 		Log.i("Sample count:", "Accel: "+sample_count[0]+" Gyro: "+sample_count[1]+" Mag: "+sample_count[2]);
+CharSequence text = "ACCELOMETER READING:"+sample_count[0]+"\n GYROMETER READING:"+sample_count[1]+"\nMAGNETIC FIELD:"+sample_count[2];
+		int duration = Toast.LENGTH_SHORT;
+Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
 		super.onStop();
 	}
 	
