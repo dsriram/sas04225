@@ -180,6 +180,7 @@ recording_accel=recording_gyro=recording_magnetic = false;
 CharSequence text = "ACCELOMETER READING:"+sample_count[0]+"\n GYROMETER READING:"+sample_count[1]+"\nMAGNETIC FIELD:"+sample_count[2];
 		int duration = Toast.LENGTH_SHORT;
 Toast toast = Toast.makeText(context, text, duration);
+toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 		toast.show();
 		super.onStop();
 	}
