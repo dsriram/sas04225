@@ -4,62 +4,54 @@ import org.ServerRecord;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class WifiRecord implements ServerRecord {
-	private String tag1;
+public class WifiRecord implements RadioMapStorage {
+
 	private String tag;
+	private String filePath;
 	boolean recording=true;
 	DataOutputStream out;
 
-	public void RadioStorageMap(){
-		
-		
-			FileOutputStream fostream = null;
-			try{
-				File[] args = null;
-				fostream = new FileOutputStream(args[0]);
-			}catch(FileNotFoundException e){
-				System.out.println("ERROR OPENING FILE");
-				
-			}
-			final int buf_size = 0;
-			out = new DataOutputStream(new BufferedOutputStream(fostream, buf_size));
-			this.tag= "WIFI RECORDING:" + tag1;
-			recording = true;
+	public WifiRecord(String filePath ){
+
+		this.filePath = filePath;
+		this.tag= "WIFI RECORDING:";
+		this.recording = false;
 	}
-		
-		public void RadioStorageMap(String bssid,int dBm) {
-			boolean recording=true;
-			FileOutputStream fostream = null;
-			DataOutputStream out;
-			int buf_size = 0;
-			if (recording) {
-				out = new DataOutputStream(new BufferedOutputStream(fostream, buf_size));
-				try {
-					for (int i = 0; i <bssid.length() ; i++) {
-						out.writeChars(bssid);
-						out.writeInt(dBm);
-					}
-				} catch (IOException e) {
-					android.util.Log.e(tag, "Unable to write to the file", e);
-				}
+
+	public void init() throws IOException {
+		FileOutputStream fostream = new FileOutputStream(filePath);
+		final int buf_size = 0;
+		out = new DataOutputStream(new BufferedOutputStream(fostream, buf_size));
+	}
+	
+	public boolean addLocation(long location_id, String location_tag, String[] bssid, int[] level)
+	{
+		try{
+			out.writeChars("#Start Record\n")
+			out.writeChars(new String(location_id+" "+location_tag+"\n"));
+			for(int i = 0; i< bssid.length ; i++) {
+				out.writeChars(bssid[i]+" "+level[i]+"\n");
 			}
+			out.writeChars("#End Record\n");
+		}catch(IOException e)
+		{
+			android.util.Log.e(tab, "Unable to add location \'location_tag\'", e);
+			return false;
 		}
-		public void close() {
-			try {
-				recording = false;
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				android.util.Log.e(tag,
-						"Unable to flush buffer to the file when closing", e);
-			}
-		}
+		return true;
 
 	}
+	
+	public void close() throws IOException
+	{
+		out.flush();
+		out.close();
+	}
+
+}
 
 
