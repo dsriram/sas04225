@@ -6,7 +6,7 @@
     
     <string name="activity0_AvailableSensors">Available Sensors</string>
     <string name="activity0_Accelerometer">Accelerometer</string>
-    <string name="activity0_Gyroscope">Gyroscope</string>
+    <string name="activity0_Orientation">Orientation</string>
     <string name="activity0_MagneticField">Magnetic Field</string>
     <string name="activity0_StartRecording">Start Recording</string>
 

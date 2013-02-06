@@ -40,22 +40,23 @@ public class MainActivity extends Activity {
 		SensorManager sManager = (SensorManager) this
 				.getSystemService(SENSOR_SERVICE);
 		List<Sensor> sList = sManager.getSensorList(Sensor.TYPE_ALL);
-		boolean accel, gyro, magnetic;
-		accel = gyro = magnetic = false;
+		boolean accel, orientation, magnetic;
+		accel = orientation = magnetic = false;
 
 		for (Sensor s : sList) {
 			if (s.getType() == Sensor.TYPE_ACCELEROMETER)
 				accel = true;
-			if (s.getType() == Sensor.TYPE_GYROSCOPE)
-				gyro = true;
+//			if (s.getType() == Sensor.TYPE_GYROSCOPE)
+//				gyro = true;
 			if (s.getType() == Sensor.TYPE_MAGNETIC_FIELD)
 				magnetic = true;
 		}
+		orientation = accel||magnetic;
 		CheckBox acs = (CheckBox) this.findViewById(R.id.SelectAccelerometer);
-		CheckBox gyr = (CheckBox) this.findViewById(R.id.SelectGyroscope);
+		CheckBox orient = (CheckBox) this.findViewById(R.id.SelectOrientation);
 		CheckBox mag = (CheckBox) this.findViewById(R.id.SelectCompass);
 		acs.setEnabled(accel);
-		gyr.setEnabled(gyro);
+		orient.setEnabled(orientation);
 		mag.setEnabled(magnetic);
 	}
 
@@ -68,14 +69,14 @@ public class MainActivity extends Activity {
 
 	public void readyToRecord(View v) {
 		CheckBox acs = (CheckBox) this.findViewById(R.id.SelectAccelerometer);
-		CheckBox gyr = (CheckBox) this.findViewById(R.id.SelectGyroscope);
+		CheckBox orientation_chkbox = (CheckBox) this.findViewById(R.id.SelectOrientation);
 		CheckBox mag = (CheckBox) this.findViewById(R.id.SelectCompass);
 		EditText fname = (EditText) this.findViewById(R.id.editText1);
 		boolean accel = acs.isChecked();
-		boolean gyro = gyr.isChecked();
+		boolean orientaion = orientation_chkbox.isChecked();
 		boolean magnetic = mag.isChecked();
 
-		if (!(accel || gyro || magnetic)) {
+		if (!(accel || orientaion || magnetic)) {
 			Toast toast = Toast.makeText(getApplicationContext(),
 					"Select a sensor", Toast.LENGTH_SHORT);
 			toast.show();
@@ -90,7 +91,7 @@ public class MainActivity extends Activity {
 		}
 		boolean[] sensor_recorded = new boolean[3];
 		sensor_recorded[0] = accel;
-		sensor_recorded[1] = gyro;
+		sensor_recorded[1] = orientaion;
 		sensor_recorded[2] = magnetic;
 
 		filename = record_dir + "/" + fname.getText().toString();

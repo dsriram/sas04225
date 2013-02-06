@@ -47,10 +47,10 @@
             android:text="@string/activity0_Accelerometer" />
 
         <CheckBox
-            android:id="@+id/SelectGyroscope"
+            android:id="@+id/SelectOrientation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/activity0_Gyroscope" />
+            android:text="@string/activity0_Orientation" />
 
         <CheckBox
             android:id="@+id/SelectCompass"
