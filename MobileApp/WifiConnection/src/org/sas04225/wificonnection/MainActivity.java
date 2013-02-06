@@ -3,14 +3,18 @@ package org.sas04225.wificonnection;
 
 
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import org.sas04225.wificonnection.R;
 
 
 import android.os.Bundle;
+import android.os.Environment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +25,9 @@ import android.net.wifi.*;
 import android.widget.TextView;
 
 
+
 public class MainActivity extends Activity {
+	private String filename,record_dir;
 
 	
 	private WifiManager wifi;
@@ -74,8 +80,19 @@ public class MainActivity extends Activity {
             	 Log.i("Scan Results:", disp);
          }});
      }
- 
-	
+	File root = Environment.getExternalStorageDirectory();
+	File record_dir1 = new File(root.getAbsolutePath(),"/WifiRecording");{
+	if (!record_dir1.exists())
+		
+	{
+		record_dir1.mkdir();
+	}
+	this.record_dir = record_dir1.getAbsolutePath();
+	filename = "recording";}
+	Intent intnt = new Intent(this, WifiRecord.class);{
+this.startActivity(intnt);
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
