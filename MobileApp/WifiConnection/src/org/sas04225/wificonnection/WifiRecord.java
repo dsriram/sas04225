@@ -12,10 +12,12 @@ import java.io.IOException;
 public class WifiRecord implements ServerRecord {
 	private String tag1;
 	private String tag;
+	boolean recording=true;
+	DataOutputStream out;
 
 	public void RadioStorageMap(){
-		boolean recording=true;
-		DataOutputStream out;
+		
+		
 			FileOutputStream fostream = null;
 			try{
 				File[] args = null;
@@ -45,6 +47,16 @@ public class WifiRecord implements ServerRecord {
 				} catch (IOException e) {
 					android.util.Log.e(tag, "Unable to write to the file", e);
 				}
+			}
+		}
+		public void close() {
+			try {
+				recording = false;
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				android.util.Log.e(tag,
+						"Unable to flush buffer to the file when closing", e);
 			}
 		}
 
