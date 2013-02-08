@@ -1,5 +1,7 @@
 package org.sas04225.wificonnection;
 
+import java.io.IOException;
+
 public interface RadioMapStorage {
 
 	public void init() throws IOException;
@@ -15,8 +17,8 @@ public interface RadioMapStorage {
    * false - if the location already exists
    */
  
-  public boolean addLocation(long location_id, String location_tag, String[] bssid, int[] level);
+  public boolean addLocation(String location_tag, String[] bssid, int[] level);
   
-  public void close() throws IOException();
+  public void close() throws IOException;
 
 }

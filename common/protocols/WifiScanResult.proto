@@ -1,0 +1,16 @@
+package org.sas04225;
+
+option java_package = "org.sas04225.proto";
+option java_outer_classname = "WifiScanResultProto";
+
+message WifiScanResult
+{
+	required string location_tag = 1;
+	repeated AccessPoint result =2;
+}
+
+message AccessPoint
+{
+	required string bssid = 1;
+	required int32 level = 2;
+}

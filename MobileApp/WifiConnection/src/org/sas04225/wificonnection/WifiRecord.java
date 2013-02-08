@@ -1,19 +1,20 @@
 package org.sas04225.wificonnection;
 
-import org.ServerRecord;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
+import org.sas04225.proto.WifiScanResultProto;
+import org.sas04225.proto.WifiScanResultProto.AccessPoint;
+import org.sas04225.proto.WifiScanResultProto.WifiScanResult;
+import org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder;
 
 public class WifiRecord implements RadioMapStorage {
 
 	private String tag;
 	private String filePath;
 	boolean recording=true;
-	DataOutputStream out;
+	OutputStream out;
 
 	public WifiRecord(String filePath ){
 
@@ -24,22 +25,24 @@ public class WifiRecord implements RadioMapStorage {
 
 	public void init() throws IOException {
 		FileOutputStream fostream = new FileOutputStream(filePath);
-		final int buf_size = 0;
-		out = new DataOutputStream(new BufferedOutputStream(fostream, buf_size));
+		out = fostream;
 	}
 	
-	public boolean addLocation(long location_id, String location_tag, String[] bssid, int[] level)
+	public boolean addLocation(String location_tag, String[] bssid, int[] level)
 	{
+		Builder scanresult = WifiScanResultProto.WifiScanResult.newBuilder();
+		scanresult.setLocationTag(location_tag);
+		for(int i = 0; i< bssid.length ; i++) {
+			AccessPoint ap = AccessPoint.newBuilder().setBssid(bssid[i]).setLevel(level[i]).build();
+			scanresult.addResult(ap);
+		}
+		WifiScanResult result = scanresult.build();
+		
 		try{
-			out.writeChars("#Start Record\n")
-			out.writeChars(new String(location_id+" "+location_tag+"\n"));
-			for(int i = 0; i< bssid.length ; i++) {
-				out.writeChars(bssid[i]+" "+level[i]+"\n");
-			}
-			out.writeChars("#End Record\n");
+			result.writeTo(out);
 		}catch(IOException e)
 		{
-			android.util.Log.e(tab, "Unable to add location \'location_tag\'", e);
+			android.util.Log.e(tag, "Unable to add location \'location_tag\'", e);
 			return false;
 		}
 		return true;
