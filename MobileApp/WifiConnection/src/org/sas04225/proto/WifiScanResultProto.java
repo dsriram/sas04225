@@ -15,7 +15,7 @@ public final class WifiScanResultProto {
     boolean hasLocationTag();
     String getLocationTag();
     
-    // repeated .org.sas04225.AccessPoint result = 2;
+    // repeated .org.sas04225.proto.AccessPoint result = 2;
     java.util.List<org.sas04225.proto.WifiScanResultProto.AccessPoint> 
         getResultList();
     org.sas04225.proto.WifiScanResultProto.AccessPoint getResult(int index);
@@ -45,12 +45,12 @@ public final class WifiScanResultProto {
     
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_WifiScanResult_descriptor;
+      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_WifiScanResult_descriptor;
     }
     
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_WifiScanResult_fieldAccessorTable;
+      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_WifiScanResult_fieldAccessorTable;
     }
     
     private int bitField0_;
@@ -86,7 +86,7 @@ public final class WifiScanResultProto {
       }
     }
     
-    // repeated .org.sas04225.AccessPoint result = 2;
+    // repeated .org.sas04225.proto.AccessPoint result = 2;
     public static final int RESULT_FIELD_NUMBER = 2;
     private java.util.List<org.sas04225.proto.WifiScanResultProto.AccessPoint> result_;
     public java.util.List<org.sas04225.proto.WifiScanResultProto.AccessPoint> getResultList() {
@@ -253,12 +253,12 @@ public final class WifiScanResultProto {
        implements org.sas04225.proto.WifiScanResultProto.WifiScanResultOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_WifiScanResult_descriptor;
+        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_WifiScanResult_descriptor;
       }
       
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_WifiScanResult_fieldAccessorTable;
+        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_WifiScanResult_fieldAccessorTable;
       }
       
       // Construct using org.sas04225.proto.WifiScanResultProto.WifiScanResult.newBuilder()
@@ -479,7 +479,7 @@ public final class WifiScanResultProto {
         onChanged();
       }
       
-      // repeated .org.sas04225.AccessPoint result = 2;
+      // repeated .org.sas04225.proto.AccessPoint result = 2;
       private java.util.List<org.sas04225.proto.WifiScanResultProto.AccessPoint> result_ =
         java.util.Collections.emptyList();
       private void ensureResultIsMutable() {
@@ -665,7 +665,7 @@ public final class WifiScanResultProto {
         return resultBuilder_;
       }
       
-      // @@protoc_insertion_point(builder_scope:org.sas04225.WifiScanResult)
+      // @@protoc_insertion_point(builder_scope:org.sas04225.proto.WifiScanResult)
     }
     
     static {
@@ -673,7 +673,7 @@ public final class WifiScanResultProto {
       defaultInstance.initFields();
     }
     
-    // @@protoc_insertion_point(class_scope:org.sas04225.WifiScanResult)
+    // @@protoc_insertion_point(class_scope:org.sas04225.proto.WifiScanResult)
   }
   
   public interface AccessPointOrBuilder
@@ -683,7 +683,7 @@ public final class WifiScanResultProto {
     boolean hasBssid();
     String getBssid();
     
-    // required int32 level = 2;
+    // required sint32 level = 2;
     boolean hasLevel();
     int getLevel();
   }
@@ -707,12 +707,12 @@ public final class WifiScanResultProto {
     
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_AccessPoint_descriptor;
+      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_AccessPoint_descriptor;
     }
     
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_AccessPoint_fieldAccessorTable;
+      return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_AccessPoint_fieldAccessorTable;
     }
     
     private int bitField0_;
@@ -748,7 +748,7 @@ public final class WifiScanResultProto {
       }
     }
     
-    // required int32 level = 2;
+    // required sint32 level = 2;
     public static final int LEVEL_FIELD_NUMBER = 2;
     private int level_;
     public boolean hasLevel() {
@@ -786,7 +786,7 @@ public final class WifiScanResultProto {
         output.writeBytes(1, getBssidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, level_);
+        output.writeSInt32(2, level_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -803,7 +803,7 @@ public final class WifiScanResultProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, level_);
+          .computeSInt32Size(2, level_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -902,12 +902,12 @@ public final class WifiScanResultProto {
        implements org.sas04225.proto.WifiScanResultProto.AccessPointOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_AccessPoint_descriptor;
+        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_AccessPoint_descriptor;
       }
       
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_AccessPoint_fieldAccessorTable;
+        return org.sas04225.proto.WifiScanResultProto.internal_static_org_sas04225_proto_AccessPoint_fieldAccessorTable;
       }
       
       // Construct using org.sas04225.proto.WifiScanResultProto.AccessPoint.newBuilder()
@@ -1047,7 +1047,7 @@ public final class WifiScanResultProto {
             }
             case 16: {
               bitField0_ |= 0x00000002;
-              level_ = input.readInt32();
+              level_ = input.readSInt32();
               break;
             }
           }
@@ -1092,7 +1092,7 @@ public final class WifiScanResultProto {
         onChanged();
       }
       
-      // required int32 level = 2;
+      // required sint32 level = 2;
       private int level_ ;
       public boolean hasLevel() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
@@ -1113,7 +1113,7 @@ public final class WifiScanResultProto {
         return this;
       }
       
-      // @@protoc_insertion_point(builder_scope:org.sas04225.AccessPoint)
+      // @@protoc_insertion_point(builder_scope:org.sas04225.proto.AccessPoint)
     }
     
     static {
@@ -1121,19 +1121,19 @@ public final class WifiScanResultProto {
       defaultInstance.initFields();
     }
     
-    // @@protoc_insertion_point(class_scope:org.sas04225.AccessPoint)
+    // @@protoc_insertion_point(class_scope:org.sas04225.proto.AccessPoint)
   }
   
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_sas04225_WifiScanResult_descriptor;
+    internal_static_org_sas04225_proto_WifiScanResult_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_org_sas04225_WifiScanResult_fieldAccessorTable;
+      internal_static_org_sas04225_proto_WifiScanResult_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_org_sas04225_AccessPoint_descriptor;
+    internal_static_org_sas04225_proto_AccessPoint_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_org_sas04225_AccessPoint_fieldAccessorTable;
+      internal_static_org_sas04225_proto_AccessPoint_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1143,31 +1143,31 @@ public final class WifiScanResultProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024WifiScanResult.proto\022\014org.sas04225\"Q\n\016" +
-      "WifiScanResult\022\024\n\014location_tag\030\001 \002(\t\022)\n\006" +
-      "result\030\002 \003(\0132\031.org.sas04225.AccessPoint\"" +
-      "+\n\013AccessPoint\022\r\n\005bssid\030\001 \002(\t\022\r\n\005level\030\002" +
-      " \002(\005B)\n\022org.sas04225.protoB\023WifiScanResu" +
-      "ltProto"
+      "\n\024WifiScanResult.proto\022\022org.sas04225.pro" +
+      "to\"W\n\016WifiScanResult\022\024\n\014location_tag\030\001 \002" +
+      "(\t\022/\n\006result\030\002 \003(\0132\037.org.sas04225.proto." +
+      "AccessPoint\"+\n\013AccessPoint\022\r\n\005bssid\030\001 \002(" +
+      "\t\022\r\n\005level\030\002 \002(\021B)\n\022org.sas04225.protoB\023" +
+      "WifiScanResultProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_org_sas04225_WifiScanResult_descriptor =
+          internal_static_org_sas04225_proto_WifiScanResult_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_org_sas04225_WifiScanResult_fieldAccessorTable = new
+          internal_static_org_sas04225_proto_WifiScanResult_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_org_sas04225_WifiScanResult_descriptor,
+              internal_static_org_sas04225_proto_WifiScanResult_descriptor,
               new java.lang.String[] { "LocationTag", "Result", },
               org.sas04225.proto.WifiScanResultProto.WifiScanResult.class,
               org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder.class);
-          internal_static_org_sas04225_AccessPoint_descriptor =
+          internal_static_org_sas04225_proto_AccessPoint_descriptor =
             getDescriptor().getMessageTypes().get(1);
-          internal_static_org_sas04225_AccessPoint_fieldAccessorTable = new
+          internal_static_org_sas04225_proto_AccessPoint_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_org_sas04225_AccessPoint_descriptor,
+              internal_static_org_sas04225_proto_AccessPoint_descriptor,
               new java.lang.String[] { "Bssid", "Level", },
               org.sas04225.proto.WifiScanResultProto.AccessPoint.class,
               org.sas04225.proto.WifiScanResultProto.AccessPoint.Builder.class);

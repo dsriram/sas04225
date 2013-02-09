@@ -12,5 +12,5 @@ message WifiScanResult
 message AccessPoint
 {
 	required string bssid = 1;
-	required int32 level = 2;
+	required sint32 level = 2;
 }
