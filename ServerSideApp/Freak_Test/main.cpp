@@ -171,11 +171,6 @@ int main(int argc, char** argv) {
 
     
     BruteForceMatcher< L2<float> > matcher0;
-    //train
-//    matcher_flann.add(descriptorsB);
-//    matcher_flann.train();
-    
-    // match
     
     
     std::cout<<"Type: "<<descriptorsB.type()<<" "<<DataType<unsigned char>::type<<std::endl;
