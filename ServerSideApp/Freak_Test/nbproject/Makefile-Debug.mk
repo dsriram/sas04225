@@ -35,15 +35,16 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/MatchResultAnalytics.o
 
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-m64 -O3
 
 # CC Compiler Flags
-CCFLAGS=-m64 -O3 -vec-report2
-CXXFLAGS=-m64 -O3 -vec-report2
+CCFLAGS=-m64 -O3
+CXXFLAGS=-m64 -O3
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -60,12 +61,17 @@ LDLIBSOPTIONS=`pkg-config --libs opencv`
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/freak_test: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/freak_test ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	icpc -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/freak_test ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/main.o: main.cpp 
+${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/MatchResultAnalytics.o: nbproject/Makefile-${CND_CONF}.mk MatchResultAnalytics.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/MatchResultAnalytics.o MatchResultAnalytics.cpp
 
 # Subprojects
 .build-subprojects:
