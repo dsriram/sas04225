@@ -51,3 +51,4 @@ local.properties
 # Netbeans generated files
 build/
 dist/
+nbproject/private
