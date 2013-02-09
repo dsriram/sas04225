@@ -29,6 +29,12 @@ public class ImageRepoServer implements Runnable {
     public ImageRepoServer(File repo, InetAddress addr, int port) {
         if (repo.exists() && repo.isDirectory() && repo.canWrite()) {
             repoDir = repo;
+            try {
+                File repo_marker = new java.io.File(repoDir.getAbsolutePath(), ".camera_repo");
+                repo_marker.createNewFile();
+            } catch (IOException e) {
+                throw new java.lang.IllegalArgumentException("Cannot create repo in the path " + repo.getPath());
+            }
         } else {
             throw new java.lang.IllegalArgumentException("Cannot write to the path " + repo.getPath());
         }
