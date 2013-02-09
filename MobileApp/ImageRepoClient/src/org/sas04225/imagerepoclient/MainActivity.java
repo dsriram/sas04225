@@ -1,7 +1,6 @@
 package org.sas04225.imagerepoclient;
 
 import java.io.File;
-import java.net.InetAddress;
 
 import android.app.Activity;
 import android.content.Intent;
