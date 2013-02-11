@@ -11,5 +11,7 @@
     <string name="title_activity_discovering">Discovering</string>
     <string name="searching_for_server">Searching for server&#8230;</string>
     <string name="textview_uploading">Uploading&#8230;</string>
+    <string name="button_retry">Retry</string>
+    <string name="button_offline">Offline</string>
 
 </resources>

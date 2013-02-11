@@ -33,4 +33,27 @@
         android:layout_marginTop="22dp"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/progressBar1"
+        android:layout_alignTop="@+id/textView2"
+        android:onClick="retryScan"
+        android:text="@string/button_retry"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/button2"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="47dp"
+        android:onClick="goOffline"
+        android:text="@string/button_offline"
+        android:visibility="visible" />
+
 </RelativeLayout>

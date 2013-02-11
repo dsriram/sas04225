@@ -27,6 +27,7 @@ public class Uploading extends Activity {
 	private String[] files;
 	private String group_name;
 	private int port,count;
+	File[] toBeSent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +39,10 @@ public class Uploading extends Activity {
 		group_name = intent.getStringExtra("groupName");
 		files = intent.getStringArrayExtra("toBeSent");
 		count = intent.getIntExtra("count", 0);
-		File[] toBeSent = new File[count];
+		toBeSent = new File[count];
 		for(int i=0; i<count; i++)
 		{
 			toBeSent[i] = new File(files[i]);
-		}
-		try {
-			ImageRepoClient client = new ImageRepoClient(toBeSent,group_name,".jpg",InetAddress.getByName(host),port);
-			client.execute();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -59,9 +53,26 @@ public class Uploading extends Activity {
 		return true;
 	}
 	
-	public void onExit()
+	protected void onStart()
 	{
-		
+		super.onStart();
+		try {
+			ImageRepoClient client = new ImageRepoClient(toBeSent,group_name,".jpg",InetAddress.getByName(host),port);
+			client.execute();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	protected void onDestroy()
+	{
+		File group_dir = toBeSent[0].getParentFile();
+		for (int i = 0; i < toBeSent.length; i++) {
+			toBeSent[i].delete();
+		}
+		group_dir.delete();
+		super.onDestroy();
 	}
 	
 	private class ImageRepoClient extends AsyncTask<Void,Void,Boolean> {
@@ -129,10 +140,12 @@ public class Uploading extends Activity {
 			file_info.putInt(index);
 			file_info.putLong(file_length[index]);
 			file_info.rewind();
-			FileChannel ch = (new FileInputStream(file[index])).getChannel();
+			FileInputStream fileInputStream = new FileInputStream(file[index]);
+			FileChannel ch = fileInputStream.getChannel();
 			sockChannel.write(file_info);
 			ch.transferTo(0, file_length[index], sockChannel);
 			ch.close();
+			fileInputStream.close();
 			file_info.clear();
 		}
 

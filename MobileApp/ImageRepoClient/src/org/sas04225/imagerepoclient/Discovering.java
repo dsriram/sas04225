@@ -49,6 +49,8 @@ public class Discovering extends Activity {
 			progressBar1.setVisibility(View.INVISIBLE);
 			TextView textView1 = (TextView) findViewById(R.id.textView1);
 			textView1.setText("Wifi not enabled");
+			View v = findViewById(R.id.button2);
+			v.setVisibility(View.VISIBLE);
 		}
 
 	}
@@ -129,10 +131,17 @@ public class Discovering extends Activity {
 				ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 				progressBar1.setIndeterminate(false);
 				TextView textView1 = (TextView) findViewById(R.id.textView1);
-				if (jmDNS != null)
+				if (jmDNS != null) {
 					textView1.setText("Unable to find the server :(");
+					View v = findViewById(R.id.button1);
+					v.setVisibility(View.VISIBLE);
+					v = findViewById(R.id.button2);
+					v.setVisibility(View.VISIBLE);
+				}
 				else {
 					textView1.setText("Wifi not connected");
+					View v = findViewById(R.id.button2);
+					v.setVisibility(View.VISIBLE);
 				}
 			} else {
 				Toast t = Toast.makeText(
@@ -144,6 +153,7 @@ public class Discovering extends Activity {
 				t.show();
 				Context ctx = getApplicationContext();
 				Intent intent = new Intent(ctx, MainActivity.class);
+				intent.putExtra("offline", false);
 				intent.putExtra("serverIP",
 						brx.info.getInet4Addresses()[0].getHostAddress());
 				intent.putExtra("serverPort", brx.info.getPort());
@@ -174,5 +184,21 @@ public class Discovering extends Activity {
 		String ipString = String.format("%d.%d.%d.%d", (ip & 0xff),
 				(ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
 		return ipString;
+	}
+	
+	public void retryScan(View v)
+	{
+		ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+		progressBar1.setIndeterminate(true);
+		TextView textView1 = (TextView) findViewById(R.id.textView1);
+		textView1.setText(R.string.searching_for_server);
+		brx.execute();
+	}
+	
+	public void goOffline(View v)
+	{
+		Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+		intent.putExtra("offline", false);
+		startActivity(intent);
 	}
 }
