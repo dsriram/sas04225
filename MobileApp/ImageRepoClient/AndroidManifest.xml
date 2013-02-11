@@ -25,11 +25,6 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="org.sas04225.imagerepoclient.Uploading"
-            android:label="@string/title_activity_uploading"
-            android:noHistory="true">
-        </activity>
-        <activity
             android:name="org.sas04225.imagerepoclient.Discovering"
             android:label="@string/app_name"
             android:noHistory="true">

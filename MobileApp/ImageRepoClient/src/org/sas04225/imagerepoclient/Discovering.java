@@ -149,7 +149,7 @@ public class Discovering extends Activity {
 						"Server found @ "
 								+ brx.info.getInet4Addresses()[0]
 										.getHostAddress() + " "
-								+ brx.info.getPort(), Toast.LENGTH_LONG);
+								+ brx.info.getPort(), Toast.LENGTH_SHORT);
 				t.show();
 				Context ctx = getApplicationContext();
 				Intent intent = new Intent(ctx, MainActivity.class);
@@ -198,7 +198,7 @@ public class Discovering extends Activity {
 	public void goOffline(View v)
 	{
 		Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-		intent.putExtra("offline", false);
+		intent.putExtra("offline", true);
 		startActivity(intent);
 	}
 }

@@ -42,18 +42,18 @@
         android:layout_alignTop="@+id/textView2"
         android:onClick="retryScan"
         android:text="@string/button_retry"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/button2"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="47dp"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
         android:onClick="goOffline"
         android:text="@string/button_offline"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </RelativeLayout>

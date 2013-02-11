@@ -1,14 +1,28 @@
 package org.sas04225.imagerepoclient;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.SocketChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -42,7 +56,7 @@ public class MainActivity extends Activity {
 		temp_dir.mkdir();
 		setting = this.getSharedPreferences(PREFERENCE_NAME, 0);
 		Intent intent = this.getIntent();
-		if (intent.getBooleanExtra("offline", false)) {
+		if (!intent.getBooleanExtra("offline", false)) {
 			working_offline = false;
 			host = intent.getStringExtra("serverIP");
 			port = intent.getIntExtra("serverPort", 12345);
@@ -76,7 +90,7 @@ public class MainActivity extends Activity {
 					File[] toBeSent = group[i].listFiles();
 					if(toBeSent != null && toBeSent.length > 0)
 					{
-						uploadFiles(group_name,toBeSent);
+						uploadFiles(group_name,toBeSent,group[i]);
 					}
 				}
 			}
@@ -126,7 +140,7 @@ public class MainActivity extends Activity {
 				editor.putBoolean("uploads_pending", true);
 				editor.commit();
 			} else {
-				uploadFiles(this.group_name, this.toBeSent);
+				uploadFiles(this.group_name, this.toBeSent, this.toBeSent[0].getParentFile());
 			}
 
 		} else {
@@ -139,7 +153,7 @@ public class MainActivity extends Activity {
 
 		Uri fileUri = Uri.fromFile(toBeSent[index]);
 		Toast t = Toast.makeText(getApplicationContext(), fileUri.toString(),
-				Toast.LENGTH_LONG);
+				Toast.LENGTH_SHORT);
 		t.show();
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
 															// name
@@ -148,21 +162,154 @@ public class MainActivity extends Activity {
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
-	private void uploadFiles(String group_name, File[] toBeSent) {
-		Intent intent = new Intent(this, Uploading.class);
+	private void uploadFiles(String group_name, File[] toBeSent, File group_dir) {
+		/*Intent intent = new Intent(this, Uploading.class);*/
 		String[] fileNames = new String[count];
+		Log.i(MainActivity.class.getCanonicalName(),"Uploading files:");
 		for (int i = 0; i < count; i++) {
 			fileNames[i] = toBeSent[i].getAbsolutePath();
+			Log.i(MainActivity.class.getCanonicalName(),fileNames[i]);
 		}
-		intent.putExtra("toBeSent", fileNames);
+		try {
+			ImageRepoClient client = new ImageRepoClient(toBeSent,group_dir,group_name,".jpg",InetAddress.getByName(host),port);
+			client.execute();
+		} catch (UnknownHostException e) {
+			Log.e(MainActivity.class.getCanonicalName(),"Unable to create AsyncTask ImageRepoClient",e);
+		}
+		
+		/*intent.putExtra("toBeSent", fileNames);
 		intent.putExtra("groupName", group_name);
+		intent.putExtra("group_dir", group_dir.getAbsolutePath());
 		intent.putExtra("port", port);
 		intent.putExtra("address", host);
-		intent.putExtra("count", count);
+		intent.putExtra("count", count);*/
 		Toast t1 = Toast.makeText(getApplicationContext(), "Uploading",
-				Toast.LENGTH_LONG);
+				Toast.LENGTH_SHORT);
 		t1.show();
-		startActivity(intent);
+		/*startActivity(intent);*/
 	}
+	
+	private class ImageRepoClient extends AsyncTask<Void,Void,Boolean> {
+
+		private File[] file;
+		private File group_dir;
+		private InetAddress host;
+		private Socket sock;
+		private SocketChannel sockChannel;
+		private int port;
+		private String name, ext;
+
+		private long[] file_length;
+		private int file_count;
+		private ByteBuffer header;
+		private ByteBuffer file_info;
+
+		public ImageRepoClient(File[] filesToBeSent, File group_dir, String name, String ext,
+				InetAddress host, int port) {
+			for (File f : filesToBeSent) {
+				if (!(f.canRead() || f.isFile())) {
+					throw new java.lang.IllegalArgumentException(
+							"Illegal file argument : " + f.getAbsolutePath());
+				}
+			}
+			file = filesToBeSent;
+			this.group_dir = group_dir; 
+			this.host = host;
+			this.port = port;
+			this.name = name;
+			this.ext = ext;
+		}
+
+		private void init() throws IOException {
+			file_count = file.length;
+			file_length = new long[file_count];
+			file_info = ByteBuffer.allocate(12);
+			header = ByteBuffer.allocate(8);
+			header.putInt(0xCAFECAFE);
+			header.putInt(file_count);
+			header.rewind();
+			for (int i = 0; i < file_count; i++) {
+				file_length[i] = file[i].length();
+			}
+			sockChannel = SocketChannel.open(new java.net.InetSocketAddress(host,
+					port));
+			sockChannel.finishConnect();
+			sock = sockChannel.socket();
+			System.out.println("Client: Connected");
+		}
+
+		private void verifyConnect() throws IOException {
+			DataInputStream in = new DataInputStream(sock.getInputStream());
+			if (in.readInt() != 0xCAFECAFE) {
+				throw new IOException("Illegal RepoServer header recieved");
+			}
+		}
+
+		private void writeHeader() throws IOException {
+			sockChannel.write(header);
+			DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+			out.writeUTF(name);
+			out.writeUTF(ext);
+		}
+
+		private void writeFile(int index) throws IOException {
+			file_info.putInt(index);
+			file_info.putLong(file_length[index]);
+			file_info.rewind();
+			FileInputStream fileInputStream = new FileInputStream(file[index]);
+			FileChannel ch = fileInputStream.getChannel();
+			sockChannel.write(file_info);
+			ch.transferTo(0, file_length[index], sockChannel);
+			ch.close();
+			fileInputStream.close();
+			file_info.clear();
+		}
+
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			Boolean b = null;
+			try {
+				init();
+				verifyConnect();
+				writeHeader();
+				for (int i = 0; i < file_count; i++) {
+					writeFile(i);
+					file[i].delete();
+				}
+				b = Boolean.TRUE;
+			} catch (IOException ex) {
+				Logger.getLogger(
+						ImageRepoClient.class.getName() + " : "
+								+ Thread.currentThread().getName()).log(
+						Level.SEVERE, "Error when sending the files", ex);
+				b = Boolean.FALSE;
+			}
+			return b;
+			
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			String msg;
+			if(result.booleanValue())
+			{
+				msg = "Uploaded";
+			}
+			else
+			{
+				msg = "Upload failed";
+			}
+			Toast t = Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_SHORT);
+			t.show();
+			for (int i = 0; i < file.length; i++) {
+				file[i].delete();
+			}
+			this.group_dir.delete();
+		}
+
+	}
+	
 
 }
+
