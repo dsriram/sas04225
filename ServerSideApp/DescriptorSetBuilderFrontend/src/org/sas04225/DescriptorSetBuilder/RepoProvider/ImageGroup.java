@@ -4,10 +4,18 @@
  */
 package org.sas04225.DescriptorSetBuilder.RepoProvider;
 
+import java.net.URI;
+import java.util.List;
+
 /**
  *
  * @author sriram
  */
-public class CameraRepoProvider {
-    
+public interface ImageGroup {
+
+    public String getGroupName();
+
+    public int getImageCount();
+
+    public List<URI> getImages();
 }

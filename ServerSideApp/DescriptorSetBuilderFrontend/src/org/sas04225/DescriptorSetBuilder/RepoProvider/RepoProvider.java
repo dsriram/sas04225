@@ -4,10 +4,15 @@
  */
 package org.sas04225.DescriptorSetBuilder.RepoProvider;
 
+import java.util.List;
+
 /**
  *
  * @author sriram
  */
 public interface RepoProvider {
-    public void getDataSets();
+
+    public int fetchDataSets();
+
+    public List<ImageGroup> getImageGroups();
 }
