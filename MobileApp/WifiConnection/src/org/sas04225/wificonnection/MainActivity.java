@@ -6,13 +6,17 @@ package org.sas04225.wificonnection;
 import java.io.File;
 import java.util.List;
 
+import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
+
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,7 +26,7 @@ import android.widget.Toast;
 
 
 
-public class MainActivity extends FragmentActivity implements NoticeDialogFragment.NoticeDialogListener{
+public class MainActivity extends FragmentActivity implements NoticeDialogListener{
 	
 	
 	private String filename,record_dir;
@@ -97,6 +101,20 @@ this.startActivity(intnt);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

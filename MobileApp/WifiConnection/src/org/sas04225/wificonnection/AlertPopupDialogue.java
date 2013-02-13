@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 
 @SuppressLint("NewApi") public class AlertPopupDialogue extends DialogFragment{
-	 public interface NoticeDialogListener {
+	 public static interface NoticeDialogListener {
 	        public void onDialogPositiveClick(DialogFragment dialog);
 	        public void onDialogNegativeClick(DialogFragment dialog);
 	    }
