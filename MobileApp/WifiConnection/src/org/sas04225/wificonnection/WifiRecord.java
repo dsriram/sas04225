@@ -1,5 +1,6 @@
 package org.sas04225.wificonnection;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,17 +13,18 @@ import org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder;
 public class WifiRecord implements RadioMapStorage {
 
 	private String tag;
-	private String filePath;
+	private File filePath;
 	boolean recording=true;
 	OutputStream out;
 
-	public WifiRecord(String filePath ){
+	public WifiRecord(File record_dir1 ){
 
-		this.filePath = filePath;
+		this.filePath = record_dir1;
 		this.tag= "WIFI RECORDING:";
 		this.recording = false;
 	}
 
+	
 	public void init() throws IOException {
 		FileOutputStream fostream = new FileOutputStream(filePath);
 		out = fostream;

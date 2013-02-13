@@ -8,12 +8,15 @@ import java.util.List;
 
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -26,7 +29,7 @@ import android.widget.Toast;
 
 
 
-public class MainActivity extends FragmentActivity implements NoticeDialogListener{
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) @SuppressLint("NewApi") public class MainActivity extends FragmentActivity implements NoticeDialogListener{
 	
 	
 	private String filename,record_dir;
@@ -91,9 +94,6 @@ public class MainActivity extends FragmentActivity implements NoticeDialogListen
 	}
 	this.record_dir = record_dir1.getAbsolutePath();
 	filename = "recording";}
-	Intent intnt = new Intent(this, WifiRecord.class);{
-this.startActivity(intnt);
-	}
 
 
 	@Override
@@ -107,7 +107,7 @@ this.startActivity(intnt);
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		// TODO Auto-generated method stub
-		
+		WifiRecord record= new WifiRecord(record_dir1);
 	}
 
 
