@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements NoticeDialogFragment.NoticeDialogListener{
+	
+	
 	private String filename,record_dir;
 
 	
