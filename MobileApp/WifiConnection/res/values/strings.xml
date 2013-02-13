@@ -5,5 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="scan_button">Scan</string>
-
+    <string name="id_tag">Id_Tag</string>
+    <string name="cancel">Cancel</string>
+<string name="alert_title">Enter location TAG</string>
+<string name="location_tag">Location Tag</string>
+<string name="ok_but">OK</string>
 </resources>
