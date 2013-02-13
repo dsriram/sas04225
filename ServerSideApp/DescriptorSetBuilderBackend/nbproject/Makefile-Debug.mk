@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/DescriptorSetBuilderResult.pb.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/ImageGroup.pb.o
 
 
 # C Compiler Flags
@@ -62,10 +64,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/descriptorsetbuilderbackend: ${OBJECT
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/descriptorsetbuilderbackend ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/DescriptorSetBuilderResult.pb.o: DescriptorSetBuilderResult.pb.cc 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o DescriptorSetBuilderResult.pb.cc
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/ImageGroup.pb.o: ImageGroup.pb.cc 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageGroup.pb.o ImageGroup.pb.cc
 
 # Subprojects
 .build-subprojects:
