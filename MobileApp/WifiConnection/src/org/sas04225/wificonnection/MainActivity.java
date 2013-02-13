@@ -4,6 +4,7 @@ package org.sas04225.wificonnection;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
@@ -33,7 +34,10 @@ import android.widget.Toast;
 	
 	
 	private String filename,record_dir;
-
+	String BSSID="";
+	 String SSID="";
+	 String RSSID="";
+	 String disp = "";
 	
 	private WifiManager wifi;
 	
@@ -42,6 +46,7 @@ import android.widget.Toast;
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+		
 			
 		 setContentView(R.layout.activity_main);
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
@@ -69,10 +74,7 @@ import android.widget.Toast;
                  }
             	 
             	 List<ScanResult> wifiList = wifi.getScanResults();
-            	 String BSSID="";
-            	 String SSID="";
-            	 String RSSID="";
-            	 String disp = "";
+            	 
             	 for (int i = 0; i < wifiList.size(); i++) {
                      ScanResult scanResult = wifiList.get(i);                  
                      SSID = scanResult.SSID;
@@ -108,6 +110,14 @@ import android.widget.Toast;
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		// TODO Auto-generated method stub
 		WifiRecord record= new WifiRecord(record_dir1);
+		try {
+			record.init();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		record.addLocation(location_tag,BSSID, level);
+		
 	}
 
 
