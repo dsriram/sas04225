@@ -4,6 +4,8 @@
  */
 package org.sas04225.DescriptorSetBuilder;
 
+import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.CodedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,24 +47,50 @@ public class BackendFeeder {
     }
 
     public void pushImageGroups() {
-        for (ImageGroup group : repo_provider.getImageGroups()) {
-            Logger.getLogger(BackendFeeder.class.getName()).log(Level.INFO, "Pushing image group: "+group.getGroupName());
-            File[] files = fetchFilesFromURI(group.getImages());
+        ArrayList<ImageGroupProto.ImageGroup> groups = new ArrayList<>();
+        List<ImageGroup> group = repo_provider.getImageGroups();
+        for (int i=0;i<group.size();i++) {
+            File[] files = fetchFilesFromURI(group.get(i).getImages());
             ImageGroupProto.ImageGroup.Builder msg = ImageGroupProto.ImageGroup.newBuilder();
-            msg.setGroupName(group.getGroupName());
+            msg.setGroupName(group.get(i).getGroupName());
+            ArrayList<String> filenames = new ArrayList<>();
+            System.out.println(group.get(i).getGroupName());
             for (File img : files) {
-                msg.addImages(img.getAbsolutePath());
+                filenames.add(img.getAbsolutePath());
+                System.out.println(img.getAbsolutePath());
             }
+            msg.addAllImages(filenames);
+            groups.add(msg.buildPartial());
+            msg.clearGroupName();
+            msg.clearImages();
+            msg.clear();
+        }
+            //pipe_out.flush();
             DescriptorSetBuilderResult result = null;
+           for (int i=0; i< groups.size(); i++) {
+               ImageGroupProto.ImageGroup msg = groups.get(i);
             try {
-                msg.build().writeTo(pipe_out);
+//                byte[] data = msg.toByteArray();
+//                pipe_out.write(new byte[]{(byte)(count>>24),(byte)(count>>16),(byte)(count>>8),(byte)count});
+//                pipe_out.write(data);
+//                msg.writeTo(pipe_out);
+                //msg.writeDelimitedTo(pipe_out);
+                byte[] data = msg.toByteArray();
+                int count =data.length;
+                Logger.getLogger(BackendFeeder.class.getName()).log(Level.INFO, "Pushing image group: {0} count: {1}", new Object[]{msg.getGroupName(), count});
+                pipe_out.write(count);
+                pipe_out.write(data);
                 pipe_out.flush();
-                //result = waitForResponse();
+                Thread.sleep(2000);
+                result = waitForResponse();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, "Error when writing to pipe: Group Name: " + group.getGroupName(), ex);
-            }
-            if (result != null) {
-                handler.onResult(result);
+                Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, "Error when writing to pipe: Group Name: " + msg.getGroupName(), ex);
+            } finally {
+                if (result != null) {
+                    handler.onResult(result);
+                }
             }
         }
     }
@@ -88,7 +116,11 @@ public class BackendFeeder {
     }
 
     private DescriptorSetBuilderResult waitForResponse() throws IOException {
-        DescriptorSetBuilderResultProto.DescriptorSetBuilderResult msg = DescriptorSetBuilderResultProto.DescriptorSetBuilderResult.parseFrom(pipe_in);
+        int len = pipe_in.read();
+        Logger.getLogger(BackendFeeder.class.getName()).log(Level.INFO, "Response len: "+len);
+        byte[] data = new byte[len];
+        pipe_in.read(data);
+        DescriptorSetBuilderResultProto.DescriptorSetBuilderResult msg = DescriptorSetBuilderResultProto.DescriptorSetBuilderResult.parseFrom(data);
         DescriptorSetBuilderResult result = new DescriptorSetBuilderResult(msg.getGroupName(), msg.getDescriptorCount(), msg.getStartIndex(), msg.getEndIndex());
         return result;
     }

@@ -42,6 +42,11 @@
         <compilerSet>Intel|Intel</compilerSet>
       </toolsSet>
       <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs protobuf`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">
