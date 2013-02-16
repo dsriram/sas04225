@@ -33,6 +33,7 @@ import android.widget.Toast;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB) @SuppressLint("NewApi") public class MainActivity extends FragmentActivity implements NoticeDialogListener{
 	
 	
+	protected static final String TAG = null;
 	private String filename,record_dir;
 	String BSSID="";
 	 String SSID="";
@@ -59,6 +60,9 @@ import android.widget.Toast;
             
 
 			public void onClick(View v) {
+				AlertPopupDialogue popup = new AlertPopupDialogue();
+				popup.show(getFragmentManager(),"popup");
+				
             	wifi.startScan();
             	Toast toast = Toast.makeText(getApplicationContext(),  "SCANNING....PLS WAIT!!!", Toast.LENGTH_SHORT);
             	toast.show();
@@ -116,7 +120,7 @@ import android.widget.Toast;
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		record.addLocation(location_tag,BSSID, level);
+		record.addLocation(location_tag,BSSID, RSSID);
 		
 	}
 

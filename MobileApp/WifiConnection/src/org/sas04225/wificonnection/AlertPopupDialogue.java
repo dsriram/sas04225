@@ -1,13 +1,19 @@
 package org.sas04225.wificonnection;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.wifi.ScanResult;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.Toast;
+
 
 @SuppressLint("NewApi") public class AlertPopupDialogue extends DialogFragment{
 	 public static interface NoticeDialogListener {
@@ -25,7 +31,7 @@ import android.view.LayoutInflater;
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				// TODO Auto-generated method stub
-				
+			
 			}
 		})
 		 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
