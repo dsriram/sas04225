@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB) @SuppressLint("NewApi") public class MainActivity extends FragmentActivity implements NoticeDialogListener{
+@SuppressLint("NewApi") public class MainActivity extends FragmentActivity implements NoticeDialogListener{
 	
 	
 	protected static final String TAG = null;
@@ -60,35 +60,41 @@ import android.widget.Toast;
             
 
 			public void onClick(View v) {
-				AlertPopupDialogue popup = new AlertPopupDialogue();
-				popup.show(getFragmentManager(),"popup");
-				
-            	wifi.startScan();
+				try{
+				DialogFragment popup = new AlertPopupDialogue();
+				popup.show(getFragmentManager(), "pp");
+				Log.d("PROJECT1","popup hidden: "+popup.isHidden());
+				}catch(NullPointerException ex)
+				{
+					Log.e("Pp", "null ptr", ex);
+				}
+				//popup.show(getSupportFragmentManager(),"popup");
+            	//wifi.startScan();
             	Toast toast = Toast.makeText(getApplicationContext(),  "SCANNING....PLS WAIT!!!", Toast.LENGTH_SHORT);
             	toast.show();
-            	
-            	Log.d("PROJECT1","Wifi WAITING");
-                
-            	
-            	 try {
-                     Thread.sleep(TIMEOUT);
-                 } catch (InterruptedException e) {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 }
-            	 
-            	 List<ScanResult> wifiList = wifi.getScanResults();
-            	 
-            	 for (int i = 0; i < wifiList.size(); i++) {
-                     ScanResult scanResult = wifiList.get(i);                  
-                     SSID = scanResult.SSID;
-                     BSSID = scanResult.BSSID;
-                     RSSID = ""+scanResult.level;
-                     disp += SSID+"  "+BSSID+" "+RSSID+"\n";
-                 // Perform action on click
-             }
-            	 Res.setText(disp);
-            	 Log.i("Scan Results:", disp);
+//            	
+//            	Log.d("PROJECT1","Wifi WAITING");
+//                
+//            	
+//            	 try {
+//                     Thread.sleep(TIMEOUT);
+//                 } catch (InterruptedException e) {
+//                     // TODO Auto-generated catch block
+//                     e.printStackTrace();
+//                 }
+//            	 
+//            	 List<ScanResult> wifiList = wifi.getScanResults();
+//            	 
+//            	 for (int i = 0; i < wifiList.size(); i++) {
+//                     ScanResult scanResult = wifiList.get(i);                  
+//                     SSID = scanResult.SSID;
+//                     BSSID = scanResult.BSSID;
+//                     RSSID = ""+scanResult.level;
+//                     disp += SSID+"  "+BSSID+" "+RSSID+"\n";
+//                 // Perform action on click
+//             }
+//            	 Res.setText(disp);
+//            	 Log.i("Scan Results:", disp);
          }});
      }
 	File root = Environment.getExternalStorageDirectory();
@@ -120,7 +126,8 @@ import android.widget.Toast;
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		record.addLocation(location_tag,BSSID, RSSID);
+		String location_tag="";
+		record.addLocation(location_tag,new String[] {}, new int[] {});
 		
 	}
 

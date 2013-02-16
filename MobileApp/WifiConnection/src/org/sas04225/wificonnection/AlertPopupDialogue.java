@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.DialogInterface;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
@@ -27,7 +29,6 @@ import android.widget.Toast;
 		 builder.setTitle(R.string.alert_title);
 		 LayoutInflater inflater = getActivity().getLayoutInflater();
 		 builder.setView(inflater.inflate(R.layout.alert_popup_dialogue,null)).setPositiveButton(R.string.ok_but,new DialogInterface.OnClickListener() {
-			
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				// TODO Auto-generated method stub
@@ -36,7 +37,7 @@ import android.widget.Toast;
 		})
 		 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
-                   AlertPopupDialogue.this.getDialog().cancel();
+                   getDialog().cancel();
                }
            });
 		 return null;
