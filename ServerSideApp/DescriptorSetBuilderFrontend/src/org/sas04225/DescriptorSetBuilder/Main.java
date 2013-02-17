@@ -4,11 +4,7 @@
  */
 package org.sas04225.DescriptorSetBuilder;
 
-import com.google.protobuf.CodedInputStream;
-import com.google.protobuf.CodedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,6 +33,7 @@ public class Main {
         repo.fetchDataSets();
         //Runtime.getRuntime().exec(make_pipe);
         final ProcessBuilder b = new ProcessBuilder(new String[]{command});
+        b.redirectError(ProcessBuilder.Redirect.INHERIT);
         Process p = b.start();
         OutputStream outstrm;
         InputStream instrm;

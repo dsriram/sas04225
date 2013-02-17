@@ -20,7 +20,12 @@
 
 #include "Trainer.hpp"
 
-#define LOGFILE "/home/sriram/Desktop/log.txt"
+#include <glog/logging.h>
+
+#define LOGFILE "/home/sriram/Development/DescriptorSetCache/log.txt"
+
+#define CACHE_FILE "/home/sriram/Development/DescriptorSetCache/cache"
+#define CACHE_METADATA "/home/sriram/Development/DescriptorSetCache/metadata"
 
 using namespace std;
 using namespace google::protobuf::io;
@@ -44,9 +49,14 @@ org::sas04225::proto::DescriptorSetBuilderResult addGroup(org::sas04225::proto::
     *name = imgrp.group_name();
     uint32_t start_index = trainer.descriptor_count;
     uint32_t descriptor_count = 0;
+//    for(int i= 0; i<imgrp.images_size(); i++) {
+//        descriptor_count += trainer.addImage(imgrp.images(i));
+//    }
+    vector<string> images;
     for(int i= 0; i<imgrp.images_size(); i++) {
-        descriptor_count += trainer.addImage(imgrp.images(i));
+        images.push_back(imgrp.images(i));
     }
+    descriptor_count = trainer.addImages(images);
     uint32_t end_index = trainer.descriptor_count -1;
     result.set_descriptor_count(descriptor_count);
     result.set_startindex(start_index);
@@ -82,10 +92,12 @@ int main(int argc, char** argv) {
         fout.flush();
         org::sas04225::proto::DescriptorSetBuilderResult result = addGroup(imgrp);
         len = writeToBuf(result, buf);
-        fout << "Response: " << (int) len << endl << "Count: "<< result.descriptor_count() <<endl<<endl;
+        fout << "Response: " << (int) len << endl << "Count: "<< result.descriptor_count() <<endl<<"End index: "<<result.endindex()<<endl<<endl;
         write(fd2, &len, 1);
         write(fd2, (void*) buf, len);
     }
+    trainer.train();
+    trainer.save(CACHE_FILE);
     fout << "Backend: completed" << endl;
     return 0;
 }

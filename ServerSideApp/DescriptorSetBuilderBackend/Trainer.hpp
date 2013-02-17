@@ -24,8 +24,9 @@
 
 #define AGAST_PARAM 30,5
 #define FREAK_PARAM true, true, 22.0f, 4
-#define INDEX_PARAM cv::flann::LshIndexParams(1, 20, 2)
-
+#define SURF_PARAM 4000
+#define INDEX_PARAM cv::flann::LshIndexParams(2, 20, 2)
+#define INDEX_PARAM_SURF cv::flann::KDTreeIndexParams()
 #define IMAGE_WIDTH 1024.0
 #define IMAGE_HEIGHT 768.0
 
@@ -44,6 +45,7 @@ namespace org{
             int k = 1;
             vector<string> files;
             vector<Mat> images;
+            Mat descriptors;
         
         public:
             uint32_t descriptor_count;
@@ -53,7 +55,12 @@ namespace org{
             //Return computed descriptors count for the image
             uint32_t addImage(string image);
             
+            //Return computed descriptors count for the set of images
+            uint32_t addImages(vector<string> images);
+            
             void train();
+            
+            void save(string filename);
         };
     }
 }

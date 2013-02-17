@@ -4,9 +4,10 @@
  */
 package org.sas04225.DescriptorSetBuilder;
 
-import com.google.protobuf.CodedInputStream;
-import com.google.protobuf.CodedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,14 +31,26 @@ public class BackendFeeder {
     private InputStream pipe_in;
     private RepoProvider repo_provider;
     private BuildResultHandler handler;
+    private final FileOutputStream cache_metadata;
 
-    public BackendFeeder(OutputStream out, InputStream in, RepoProvider repo_provider) {
+    public BackendFeeder(OutputStream out, InputStream in, RepoProvider repo_provider) throws FileNotFoundException {
         this.pipe_out = out;
         this.pipe_in = in;
         this.repo_provider = repo_provider;
+        cache_metadata = new FileOutputStream(System.getProperty("user.home")+"/"+Main.cache_dir+"/metadata");
+        final DataOutputStream out_file = new DataOutputStream(cache_metadata);
         handler = new BuildResultHandler() {
             @Override
             public void onResult(DescriptorSetBuilderResult result) {
+                try {
+                    out_file.writeUTF(result.group_name);
+                    out_file.writeInt(result.descriptor_count);
+                    out_file.writeLong(result.startIndex);
+                    out_file.writeLong(result.endIndex);
+                    out_file.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
     }
@@ -83,10 +96,10 @@ public class BackendFeeder {
                     pipe_out.write(count);
                     pipe_out.write(data);
                     pipe_out.flush();
-                    Thread.sleep(2000);
+//                    Thread.sleep(2000);
                     result = waitForResponse();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, "Error when writing to pipe: Group Name: " + msg.getGroupName(), ex);
                 } finally {

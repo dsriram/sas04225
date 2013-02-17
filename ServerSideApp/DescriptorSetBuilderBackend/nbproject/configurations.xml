@@ -46,6 +46,12 @@
         <compilerSet>Intel|Intel</compilerSet>
       </toolsSet>
       <compileType>
+        <cTool>
+          <commandLine>-O3</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>-O3</commandLine>
+        </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs protobuf`</linkerOptionItem>
