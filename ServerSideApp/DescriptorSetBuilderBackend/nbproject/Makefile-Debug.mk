@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DescriptorSetBuilderResult.pb.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/ImageGroup.pb.o
+	${OBJECTDIR}/ImageGroup.pb.o \
+	${OBJECTDIR}/MatchResultAnalytics.o
 
 
 # C Compiler Flags
@@ -54,7 +55,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs protobuf`  
+LDLIBSOPTIONS=`pkg-config --libs protobuf` `pkg-config --libs opencv`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -67,17 +68,22 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/descriptorsetbuilderbackend: ${OBJECT
 ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o: DescriptorSetBuilderResult.pb.cc 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g `pkg-config --cflags protobuf`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o DescriptorSetBuilderResult.pb.cc
+	$(COMPILE.cc) -g `pkg-config --cflags protobuf` `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o DescriptorSetBuilderResult.pb.cc
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g `pkg-config --cflags protobuf`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags protobuf` `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/ImageGroup.pb.o: ImageGroup.pb.cc 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g `pkg-config --cflags protobuf`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageGroup.pb.o ImageGroup.pb.cc
+	$(COMPILE.cc) -g `pkg-config --cflags protobuf` `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageGroup.pb.o ImageGroup.pb.cc
+
+${OBJECTDIR}/MatchResultAnalytics.o: MatchResultAnalytics.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g `pkg-config --cflags protobuf` `pkg-config --cflags opencv`    -MMD -MP -MF $@.d -o ${OBJECTDIR}/MatchResultAnalytics.o MatchResultAnalytics.cpp
 
 # Subprojects
 .build-subprojects:

@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.sas04225.DescriptorSetBuilder.RepoProvider.CameraRepo;
@@ -33,19 +35,15 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException {
         CameraRepo repo = new CameraRepo(System.getProperty("user.home")+"/"+default_repo_dir);
         repo.fetchDataSets();
-        Runtime.getRuntime().exec(make_pipe);
+        //Runtime.getRuntime().exec(make_pipe);
         final ProcessBuilder b = new ProcessBuilder(new String[]{command});
-        b.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-        //Process p = b.start();
-        FileOutputStream outstrm = new FileOutputStream("/tmp/common_pipe_out");
-        FileInputStream instrm = new FileInputStream("/tmp/common_pipe_in");
-        CodedInputStream instrc = CodedInputStream.newInstance(instrm);
-        CodedOutputStream outstrc = CodedOutputStream.newInstance(outstrm);
+        Process p = b.start();
+        OutputStream outstrm;
+        InputStream instrm;
+        outstrm = p.getOutputStream();
+        instrm = p.getInputStream();
         BackendFeeder feeder = new BackendFeeder(outstrm, instrm, repo);
         feeder.pushImageGroups();
-        //p.waitFor();
-        //Runtime.getRuntime().exec(rm_pipe);
-        //p.waitFor();
         Logger.getLogger(Main.class.getName()).log(Level.INFO, "Quitting");
     }
 }

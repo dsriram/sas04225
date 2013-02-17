@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DescriptorSetBuilderResult.pb.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/ImageGroup.pb.o
+	${OBJECTDIR}/ImageGroup.pb.o \
+	${OBJECTDIR}/MatchResultAnalytics.o
 
 
 # C Compiler Flags
@@ -78,6 +79,11 @@ ${OBJECTDIR}/ImageGroup.pb.o: ImageGroup.pb.cc
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageGroup.pb.o ImageGroup.pb.cc
+
+${OBJECTDIR}/MatchResultAnalytics.o: MatchResultAnalytics.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/MatchResultAnalytics.o MatchResultAnalytics.cpp
 
 # Subprojects
 .build-subprojects:

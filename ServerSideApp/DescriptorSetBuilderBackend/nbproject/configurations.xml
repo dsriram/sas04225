@@ -8,6 +8,8 @@
         <itemPath>DescriptorSetBuilderResult.pb.h</itemPath>
         <itemPath>ImageGroup.pb.h</itemPath>
       </logicalFolder>
+      <itemPath>MatchResultAnalytics.hpp</itemPath>
+      <itemPath>Trainer.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -20,6 +22,7 @@
         <itemPath>DescriptorSetBuilderResult.pb.cc</itemPath>
         <itemPath>ImageGroup.pb.cc</itemPath>
       </logicalFolder>
+      <itemPath>MatchResultAnalytics.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -45,6 +48,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs protobuf`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

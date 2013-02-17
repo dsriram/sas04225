@@ -47,51 +47,56 @@ public class BackendFeeder {
     }
 
     public void pushImageGroups() {
-        ArrayList<ImageGroupProto.ImageGroup> groups = new ArrayList<>();
-        List<ImageGroup> group = repo_provider.getImageGroups();
-        for (int i=0;i<group.size();i++) {
-            File[] files = fetchFilesFromURI(group.get(i).getImages());
-            ImageGroupProto.ImageGroup.Builder msg = ImageGroupProto.ImageGroup.newBuilder();
-            msg.setGroupName(group.get(i).getGroupName());
-            ArrayList<String> filenames = new ArrayList<>();
-            System.out.println(group.get(i).getGroupName());
-            for (File img : files) {
-                filenames.add(img.getAbsolutePath());
-                System.out.println(img.getAbsolutePath());
+        try {
+            ArrayList<ImageGroupProto.ImageGroup> groups = new ArrayList<>();
+            List<ImageGroup> group = repo_provider.getImageGroups();
+            for (int i=0;i<group.size();i++) {
+                File[] files = fetchFilesFromURI(group.get(i).getImages());
+                ImageGroupProto.ImageGroup.Builder msg = ImageGroupProto.ImageGroup.newBuilder();
+                msg.setGroupName(group.get(i).getGroupName());
+                ArrayList<String> filenames = new ArrayList<>();
+                System.out.println(group.get(i).getGroupName());
+                for (File img : files) {
+                    filenames.add(img.getAbsolutePath());
+                    System.out.println(img.getAbsolutePath());
+                }
+                msg.addAllImages(filenames);
+                groups.add(msg.buildPartial());
+                msg.clearGroupName();
+                msg.clearImages();
+                msg.clear();
             }
-            msg.addAllImages(filenames);
-            groups.add(msg.buildPartial());
-            msg.clearGroupName();
-            msg.clearImages();
-            msg.clear();
-        }
-            //pipe_out.flush();
-            DescriptorSetBuilderResult result = null;
-           for (int i=0; i< groups.size(); i++) {
-               ImageGroupProto.ImageGroup msg = groups.get(i);
-            try {
-//                byte[] data = msg.toByteArray();
-//                pipe_out.write(new byte[]{(byte)(count>>24),(byte)(count>>16),(byte)(count>>8),(byte)count});
-//                pipe_out.write(data);
-//                msg.writeTo(pipe_out);
-                //msg.writeDelimitedTo(pipe_out);
-                byte[] data = msg.toByteArray();
-                int count =data.length;
-                Logger.getLogger(BackendFeeder.class.getName()).log(Level.INFO, "Pushing image group: {0} count: {1}", new Object[]{msg.getGroupName(), count});
-                pipe_out.write(count);
-                pipe_out.write(data);
-                pipe_out.flush();
-                Thread.sleep(2000);
-                result = waitForResponse();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, "Error when writing to pipe: Group Name: " + msg.getGroupName(), ex);
-            } finally {
-                if (result != null) {
-                    handler.onResult(result);
+                //pipe_out.flush();
+                DescriptorSetBuilderResult result = null;
+                pipe_out.write(groups.size());
+               for (int i=0; i< groups.size(); i++) {
+                   ImageGroupProto.ImageGroup msg = groups.get(i);
+                try {
+    //                byte[] data = msg.toByteArray();
+    //                pipe_out.write(new byte[]{(byte)(count>>24),(byte)(count>>16),(byte)(count>>8),(byte)count});
+    //                pipe_out.write(data);
+    //                msg.writeTo(pipe_out);
+                    //msg.writeDelimitedTo(pipe_out);
+                    byte[] data = msg.toByteArray();
+                    int count =data.length;
+                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.INFO, "Pushing image group: {0} count: {1}", new Object[]{msg.getGroupName(), count});
+                    pipe_out.write(count);
+                    pipe_out.write(data);
+                    pipe_out.flush();
+                    Thread.sleep(2000);
+                    result = waitForResponse();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, "Error when writing to pipe: Group Name: " + msg.getGroupName(), ex);
+                } finally {
+                    if (result != null) {
+                        handler.onResult(result);
+                    }
                 }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(BackendFeeder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
