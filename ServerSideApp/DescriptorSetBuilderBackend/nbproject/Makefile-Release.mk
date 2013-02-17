@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/DescriptorSetBuilderResult.pb.o \
+	${OBJECTDIR}/Trainer.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/ImageGroup.pb.o \
 	${OBJECTDIR}/MatchResultAnalytics.o
@@ -69,6 +70,11 @@ ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o: DescriptorSetBuilderResult.pb.cc
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/DescriptorSetBuilderResult.pb.o DescriptorSetBuilderResult.pb.cc
+
+${OBJECTDIR}/Trainer.o: Trainer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Trainer.o Trainer.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

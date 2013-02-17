@@ -18,6 +18,8 @@
 #include <google/protobuf/stubs/common.h>
 #include <fstream>
 
+#include "Trainer.hpp"
+
 #define LOGFILE "/home/sriram/Desktop/log.txt"
 
 using namespace std;
@@ -27,32 +29,50 @@ using namespace google::protobuf::io;
  * 
  */
 
+org::sas04225::Trainer trainer;
+
 int writeToBuf(org::sas04225::proto::DescriptorSetBuilderResult msg, char* buf) {
     int len = msg.ByteSize();
     msg.SerializeToArray((void*) buf, len);
     return len;
 }
 
+org::sas04225::proto::DescriptorSetBuilderResult addGroup(org::sas04225::proto::ImageGroup imgrp) {
+    org::sas04225::proto::DescriptorSetBuilderResult result;
+    result.Clear();
+    string* name = result.mutable_group_name();
+    *name = imgrp.group_name();
+    uint32_t start_index = trainer.descriptor_count;
+    uint32_t descriptor_count = 0;
+    for(int i= 0; i<imgrp.images_size(); i++) {
+        descriptor_count += trainer.addImage(imgrp.images(i));
+    }
+    uint32_t end_index = trainer.descriptor_count -1;
+    result.set_descriptor_count(descriptor_count);
+    result.set_startindex(start_index);
+    result.set_endindex(end_index);
+    return result;
+}
+
 int main(int argc, char** argv) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
-    
-    org::sas04225::proto::ImageGroup imgrp;
-    org::sas04225::proto::DescriptorSetBuilderResult result;
+
     char buf[2048];
     uint8_t len = 0;
-    
+
     fstream fout(LOGFILE, fstream::out);
 
     int fd = 0;
     int fd2 = 1;
 
-    int count = -1;
-    read(fd,&count,1);
+    int count = 0;
+    read(fd, &count, 1);
     fcntl(fd2, F_SETFL, O_DSYNC | O_WRONLY);
     fcntl(fd, F_SETFL, O_RSYNC | O_RDONLY);
     fout << "Count: " << count << endl;
     fout.flush();
     for (int i = 0; i < count; i++) {
+        org::sas04225::proto::ImageGroup imgrp;
         imgrp.Clear();
         read(fd, &len, 1);
         read(fd, (void*) buf, len);
@@ -60,14 +80,9 @@ int main(int argc, char** argv) {
         imgrp.ParseFromArray(buf, len);
         fout << "Group name " << imgrp.group_name() << endl;
         fout.flush();
-        result.Clear();
-        string* name = result.mutable_group_name();
-        *name = imgrp.group_name();
-        result.set_descriptor_count(10);
-        result.set_startindex(0);
-        result.set_endindex(9);
+        org::sas04225::proto::DescriptorSetBuilderResult result = addGroup(imgrp);
         len = writeToBuf(result, buf);
-        fout << "Response: " << (int) len << endl << endl;
+        fout << "Response: " << (int) len << endl << "Count: "<< result.descriptor_count() <<endl<<endl;
         write(fd2, &len, 1);
         write(fd2, (void*) buf, len);
     }

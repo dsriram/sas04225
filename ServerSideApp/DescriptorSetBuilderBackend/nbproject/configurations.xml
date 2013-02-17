@@ -23,6 +23,7 @@
         <itemPath>ImageGroup.pb.cc</itemPath>
       </logicalFolder>
       <itemPath>MatchResultAnalytics.cpp</itemPath>
+      <itemPath>Trainer.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
