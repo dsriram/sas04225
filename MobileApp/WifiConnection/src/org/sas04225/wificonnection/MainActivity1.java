@@ -24,6 +24,7 @@ public class MainActivity1 extends Activity {
         @SuppressWarnings("deprecation")
 		public void onButtonClick(View button) {
         	Intent a = new Intent(MainActivity1.this,MainActivity.class);
+        	a.putExtra("fileName", );
 			startActivity(a);
             // Creates the dialog if necessary, then shows it.
             // Will show the same dialog if called multiple times.

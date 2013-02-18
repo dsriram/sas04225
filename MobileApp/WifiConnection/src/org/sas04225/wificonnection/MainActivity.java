@@ -53,6 +53,8 @@ import android.widget.Toast;
 	
 	private long TIMEOUT = 8000;
 
+	WifiScanAsync asyncTask;
+	WifiRecord wifirec;
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -62,7 +64,15 @@ import android.widget.Toast;
 		 setContentView(R.layout.activity_main);
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
 		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-         
+		 wifirec = new WifiRecord(record_dir1);
+		 asyncTask = new WifiScanAsync(wifi);
+		 
+         try {
+			wifirec.init();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          Intent a= getIntent();
          Toast toast = Toast.makeText(getApplicationContext(),  "Sleep time: "+this.TIMEOUT+"ms", Toast.LENGTH_SHORT);
      	toast.show();
@@ -95,7 +105,7 @@ import android.widget.Toast;
              }
          }
          public void scanButtonHandler(View v){
-        	 WifiScanAsync asyncTask= new WifiScanAsync(wifi);
+        	
         	 asyncTask.execute(new Void[]{});
          }
       
@@ -118,9 +128,20 @@ import android.widget.Toast;
       
                  @Override
                  public void onClick(DialogInterface dialog, int whichButton) {
+                	 
                      String value = input.getText().toString();
                      Log.d(TAG, "LOCATION" + value);
-                     
+                     String[] BSSID = new String[]{};
+                     Integer[] RSSID = new Integer[]{};
+                     BSSID = asyncTask.result.keySet().toArray(BSSID);
+                     RSSID= asyncTask.result.values().toArray(RSSID);
+                     int[] rssid= new int[RSSID.length];
+                     for(int i =0;i<RSSID.length;i++)
+                     {
+                    	 rssid[i]=RSSID[i].intValue();
+                     }
+                     wifirec.addLocation(value, BSSID,rssid );
+                    
               
                      return;
                  }
@@ -222,7 +243,7 @@ private class WifiScanAsync extends AsyncTask<Void, Void, Hashtable<String,Integ
 public final long TIMEOUT = 5000;
  
 android.net.wifi.WifiManager wifi;
-java.util.Hashtable<String,Integer> result;
+public java.util.Hashtable<String,Integer> result;
  
 public WifiScanAsync(android.net.wifi.WifiManager wifi) {
 result = new java.util.Hashtable<String,Integer>();
@@ -244,7 +265,7 @@ protected Hashtable<String, Integer> doInBackground(Void... params) {
            	 
            	 List<ScanResult> wifiList = wifi.getScanResults();
            	 
-           	 
+           	 result.clear();
 			for (int i = 0; i < wifiList.size(); i++) {
                     ScanResult scanResult = wifiList.get(i);
                      result.put(scanResult.BSSID,scanResult.level);
