@@ -6,18 +6,16 @@ package org.sas04225.wificonnection;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.Hashtable;
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -62,7 +60,7 @@ import android.widget.Toast;
 			public void onClick(View v) {
 				try{
 				DialogFragment popup = new AlertPopupDialogue();
-				popup.show(getFragmentManager(), "pp");
+				popup.show(getFragmentManager(), "pop");
 				Log.d("PROJECT1","popup hidden: "+popup.isHidden());
 				}catch(NullPointerException ex)
 				{
@@ -139,4 +137,49 @@ import android.widget.Toast;
 	}
 
 	
+}
+class WifiScanAsync extends AsyncTask<Void, Void, Hashtable<String,Integer>> {
+	 
+public final long TIMEOUT = 5000;
+ 
+android.net.wifi.WifiManager wifi;
+java.util.Hashtable<String,Integer> result;
+ 
+public WifiScanAsync(android.net.wifi.WifiManager wifi) {
+result = new java.util.Hashtable<String,Integer>();
+this.wifi = wifi;
+}
+ 
+protected Hashtable<String, Integer> doInBackground(Void... params) {
+            wifi.startScan();
+           	
+           	Log.d("WifiScanAsync","Scanning.. Thread sleep()");
+               
+           	
+           	 try {
+                    Thread.sleep(TIMEOUT);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+           	 
+           	 List<ScanResult> wifiList = wifi.getScanResults();
+           	 
+           	 
+			for (int i = 0; i < wifiList.size(); i++) {
+                    ScanResult scanResult = wifiList.get(i);
+                     result.put(scanResult.BSSID,scanResult.level);
+                    Log.d("ScanResult"," "+scanResult.BSSID+" "+scanResult.level+"dBm");
+            }
+            
+            return result;
+}
+ 
+protected void onPostExecute(Hashtable<String, Integer> result) {
+super.onPostExecute(result);
+ //TODO show the popup window
+ 
+ // Create a method inside MainActivity and call it from here directly
+}
+ 
 }
