@@ -4,14 +4,17 @@ package org.sas04225.wificonnection;
 
 
 import java.io.File;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Hashtable;
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ServiceInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -28,7 +31,7 @@ import android.widget.Toast;
 
 
 
-@SuppressLint("NewApi") public class MainActivity extends FragmentActivity implements NoticeDialogListener{
+@SuppressLint("NewApi") public class MainActivity extends Activity{
 	
 	
 	protected static final String TAG = null;
@@ -58,14 +61,10 @@ import android.widget.Toast;
             
 
 			public void onClick(View v) {
-				try{
-				DialogFragment popup = new AlertPopupDialogue();
-				popup.show(getFragmentManager(), "pop");
-				Log.d("PROJECT1","popup hidden: "+popup.isHidden());
-				}catch(NullPointerException ex)
-				{
-					Log.e("Pp", "null ptr", ex);
-				}
+				Intent a = new Intent(this,MainActivity1.class);
+				startActivity(a);
+				
+				
 				//popup.show(getSupportFragmentManager(),"popup");
             	//wifi.startScan();
             	Toast toast = Toast.makeText(getApplicationContext(),  "SCANNING....PLS WAIT!!!", Toast.LENGTH_SHORT);
@@ -114,7 +113,6 @@ import android.widget.Toast;
 	}
 
 
-	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		// TODO Auto-generated method stub
 		WifiRecord record= new WifiRecord(record_dir1);
