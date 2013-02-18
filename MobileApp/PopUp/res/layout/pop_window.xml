@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-      <EditText
+     <EditText
          android:id="@+id/location_tag"
          android:layout_width="250dp"
          android:layout_height="wrap_content"
@@ -11,7 +12,6 @@
          android:layout_marginLeft="4dp"
          android:layout_marginRight="4dp"
          android:layout_marginTop="16dp"
-         android:hint="@string/location_tag"
          android:inputType="text" />
 
      <Button
@@ -22,6 +22,4 @@
          android:layout_below="@+id/location_tag"
          android:layout_marginRight="84dp"
          android:text="@string/ok_but" />
-    
-
 </LinearLayout>
