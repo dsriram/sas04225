@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PopUp</string>
+    <string name="popup">TEST POP UP</string>
+    <string name="menu_settings">Settings</string>
+    <string name="ok_but">OK</string>
+    <string name="location_tag">LOCATION</string>
+
+</resources>
