@@ -99,4 +99,9 @@ public class Backend {
         });
         t.start();
     }
+    
+    public void waitFor() throws InterruptedException
+    {
+        p.waitFor();
+    }
 }

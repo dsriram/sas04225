@@ -1,0 +1,17 @@
+package org.sas04225.proto;
+
+option java_package = "org.sas04225.proto";
+option java_outer_classname = "LookupQueryProto";
+
+message LookupQuery
+{
+	required uint64 request_id = 1;
+	required string path = 2;
+	required Descriptors descriptors = 3;
+}
+
+message Descriptors
+{
+	required uint32 descriptor_size = 1;
+	repeated bytes descriptors = 2;
+}

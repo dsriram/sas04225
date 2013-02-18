@@ -5,7 +5,12 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="gen" projectFiles="true">
+        <itemPath>LookupQuery.pb.h</itemPath>
+        <itemPath>LookupResult.pb.h</itemPath>
         <itemPath>RecognitionServerBackendInit.pb.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="workers" projectFiles="true">
+        <itemPath>ImageLookupWorker.hpp</itemPath>
       </logicalFolder>
       <itemPath>msgIO.hpp</itemPath>
     </logicalFolder>
@@ -17,7 +22,12 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="gen" projectFiles="true">
+        <itemPath>LookupQuery.pb.cc</itemPath>
+        <itemPath>LookupResult.pb.cc</itemPath>
         <itemPath>RecognitionServerBackendInit.pb.cc</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="workers" projectFiles="true">
+        <itemPath>ImageLookupWorker.cpp</itemPath>
       </logicalFolder>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>

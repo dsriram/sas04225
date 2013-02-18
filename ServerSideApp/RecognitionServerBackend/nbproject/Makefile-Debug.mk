@@ -35,8 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/ImageLookupWorker.o \
+	${OBJECTDIR}/LookupResult.pb.o \
 	${OBJECTDIR}/RecognitionServerBackendInit.pb.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/LookupQuery.pb.o
 
 
 # C Compiler Flags
@@ -63,6 +66,16 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend: ${OBJECTFIL
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/ImageLookupWorker.o: ImageLookupWorker.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g `pkg-config --cflags opencv` `pkg-config --cflags protobuf` -std=c++11   -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageLookupWorker.o ImageLookupWorker.cpp
+
+${OBJECTDIR}/LookupResult.pb.o: LookupResult.pb.cc 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g `pkg-config --cflags opencv` `pkg-config --cflags protobuf` -std=c++11   -MMD -MP -MF $@.d -o ${OBJECTDIR}/LookupResult.pb.o LookupResult.pb.cc
+
 ${OBJECTDIR}/RecognitionServerBackendInit.pb.o: RecognitionServerBackendInit.pb.cc 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -72,6 +85,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g `pkg-config --cflags opencv` `pkg-config --cflags protobuf` -std=c++11   -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/LookupQuery.pb.o: LookupQuery.pb.cc 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g `pkg-config --cflags opencv` `pkg-config --cflags protobuf` -std=c++11   -MMD -MP -MF $@.d -o ${OBJECTDIR}/LookupQuery.pb.o LookupQuery.pb.cc
 
 # Subprojects
 .build-subprojects:

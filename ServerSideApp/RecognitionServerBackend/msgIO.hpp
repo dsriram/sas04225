@@ -10,6 +10,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <unistd.h>
 
 static unsigned char buffer[65535];
 
@@ -24,7 +25,10 @@ void writeToFD(T& msg, int fd) {
 template<class T>
 T& readFromFD(T& msg, int fd) {
     uint32_t len = 0;
-    read(fd,(void*)&len,4);
+    while(read(fd,(void*)&len,4) == 0)
+    {
+        usleep(1);
+    }
     read(fd,(void*)&buffer[0],len);
     msg.ParseFromArray(buffer, len);
     return msg;

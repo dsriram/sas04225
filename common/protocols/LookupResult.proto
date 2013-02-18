@@ -1,0 +1,16 @@
+package org.sas04225.proto;
+
+option java_package = "org.sas04225.proto";
+option java_outer_classname = "LookupResultProto";
+
+message LookupResult
+{
+	required uint64 request_id = 1;
+	repeated DMatch matches = 2;
+}
+
+message DMatch
+{
+	required uint32 distance = 1;
+	required uint64 trainIdx = 2;
+}
