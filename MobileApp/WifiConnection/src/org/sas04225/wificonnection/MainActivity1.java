@@ -18,13 +18,16 @@ public class MainActivity1 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity1);
+        
     }
        
      
         @SuppressWarnings("deprecation")
 		public void onButtonClick(View button) {
+        	EditText Urlis=(EditText)findViewById(R.id.location_tag);
         	Intent a = new Intent(MainActivity1.this,MainActivity.class);
-        	a.putExtra("fileName", );
+        	final String fname=Urlis.getText().toString();
+        	a.putExtra("fileName",fname );
 			startActivity(a);
             // Creates the dialog if necessary, then shows it.
             // Will show the same dialog if called multiple times.
