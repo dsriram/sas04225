@@ -16,14 +16,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.sas04225.wificonnection.MainActivity"
+            android:name="org.sas04225.wificonnection.MainActivity1"
             android:label="@string/app_name" >
+           
+            
             <intent-filter>
+                <action android:name="com.example.dialogactivity"/>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+         <activity android:name="MainActivity"
+     android:label="@string/app_name" >
+            </activity>
     </application>
 
 </manifest>

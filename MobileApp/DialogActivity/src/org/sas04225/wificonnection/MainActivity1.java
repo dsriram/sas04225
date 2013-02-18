@@ -1,4 +1,4 @@
-package com.example.dialogactivity;
+package org.sas04225.wificonnection;
 
 
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -16,15 +17,12 @@ public class MainActivity1 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activity1);}
+        setContentView(R.layout.activity_main_activity1);
+    }
         private static final String TAG = "DialogActivity";
         private static final int DLG_EXAMPLE1 = 0;
         private static final int TEXT_ID = 0;
-     
-        public void onCreate1(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main_activity1);
-        }
+
      
         @SuppressWarnings("deprecation")
 		public void onButtonClick(View button) {
@@ -68,6 +66,8 @@ public class MainActivity1 extends Activity {
          * Create and return an example alert dialog with an edit text box.
          */
         private Dialog createExampleDialog() {
+        	Intent a= getIntent();
+        	
      
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Hello User");
