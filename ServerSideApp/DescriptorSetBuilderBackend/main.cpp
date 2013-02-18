@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     char buf[2048];
     uint8_t len = 0;
 
-    fstream fout(LOGFILE, fstream::out);
+    fstream log(LOGFILE, fstream::out);
 
     int fd = 0;
     int fd2 = 1;
@@ -79,26 +79,26 @@ int main(int argc, char** argv) {
     read(fd, &count, 1);
     fcntl(fd2, F_SETFL, O_DSYNC | O_WRONLY);
     fcntl(fd, F_SETFL, O_RSYNC | O_RDONLY);
-    fout << "Count: " << count << endl;
-    fout.flush();
+    log << "Count: " << count << endl;
+    log.flush();
     for (int i = 0; i < count; i++) {
         org::sas04225::proto::ImageGroup imgrp;
         imgrp.Clear();
         read(fd, &len, 1);
         read(fd, (void*) buf, len);
-        fout << "Length: " << (int) len << endl;
+        log << "Length: " << (int) len << endl;
         imgrp.ParseFromArray(buf, len);
-        fout << "Group name " << imgrp.group_name() << endl;
-        fout.flush();
+        log << "Group name " << imgrp.group_name() << endl;
+        log.flush();
         org::sas04225::proto::DescriptorSetBuilderResult result = addGroup(imgrp);
         len = writeToBuf(result, buf);
-        fout << "Response: " << (int) len << endl << "Count: "<< result.descriptor_count() <<endl<<"End index: "<<result.endindex()<<endl<<endl;
+        log << "Response: " << (int) len << endl << "Count: "<< result.descriptor_count() <<endl<<"End index: "<<result.endindex()<<endl<<endl;
         write(fd2, &len, 1);
         write(fd2, (void*) buf, len);
     }
     trainer.train();
     trainer.save(CACHE_FILE);
-    fout << "Backend: completed" << endl;
+    log << "Backend: completed" << endl;
     return 0;
 }
 

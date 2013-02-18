@@ -34,6 +34,9 @@ public class DescriptorSetBuilderResult {
     
     public static DescriptorSetBuilderResult fromDataStream(DataInputStream in) throws IOException
     {
+        if(in.available() == 0) {
+            return null;
+        }
         String name = in.readUTF();
         int count = in.readInt();
         long start = in.readLong();

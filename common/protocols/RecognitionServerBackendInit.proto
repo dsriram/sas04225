@@ -1,0 +1,10 @@
+package org.sas04225.proto;
+
+option java_package = "org.sas04225.proto";
+option java_outer_classname = "RecognitionServerBackendInitProto";
+
+message RecognitionServerBackendInit
+{
+	required uint64 descriptor_count = 1;
+	required string cache_path = 2;
+}
