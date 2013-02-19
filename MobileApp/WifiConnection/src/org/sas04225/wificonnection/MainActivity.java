@@ -79,10 +79,12 @@ import android.widget.Toast;
 		 asyncTask = new WifiScanAsync(wifi);
 		 
          try {
+        	
 			wifirec.init();
+			 Log.i("init()wrking", fname);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			Log.e("init() not working", fname);
+			Log.i("init() not working", fname);
 			e.printStackTrace();
 		}
          
