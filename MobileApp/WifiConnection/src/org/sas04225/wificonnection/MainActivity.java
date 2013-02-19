@@ -64,6 +64,17 @@ import android.widget.Toast;
 		 setContentView(R.layout.activity_main);
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
 		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		 File root = Environment.getExternalStorageDirectory();
+			File record_dir1 = new File(root.getAbsolutePath(),"/WifiRecording");{
+			if (!record_dir1.exists())
+				
+			{
+				record_dir1.mkdir();
+			}
+			this.record_dir = record_dir1.getAbsolutePath();
+			Intent a= getIntent();
+	         String fname = a.getStringExtra("fileName");
+			filename = fname;}
 		 wifirec = new WifiRecord(record_dir1);
 		 asyncTask = new WifiScanAsync(wifi);
 		 
@@ -73,7 +84,7 @@ import android.widget.Toast;
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-         Intent a= getIntent();
+         
          Toast toast = Toast.makeText(getApplicationContext(),  "Sleep time: "+this.TIMEOUT+"ms", Toast.LENGTH_SHORT);
      	toast.show();
      	}
@@ -197,15 +208,7 @@ import android.widget.Toast;
 		});
          return builder.create();   
      }
-	File root = Environment.getExternalStorageDirectory();
-	File record_dir1 = new File(root.getAbsolutePath(),"/WifiRecording");{
-	if (!record_dir1.exists())
-		
-	{
-		record_dir1.mkdir();
-	}
-	this.record_dir = record_dir1.getAbsolutePath();
-	filename = "recording";}
+	
 
 
 	@Override
