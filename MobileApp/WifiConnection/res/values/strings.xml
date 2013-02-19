@@ -7,7 +7,9 @@
     <string name="scan_button">Scan</string>
     <string name="id_tag">Id_Tag</string>
     <string name="cancel">Cancel</string>
-<string name="alert_title">Enter location TAG</string>
-<string name="location_tag">Location Tag</string>
-<string name="ok_but">OK</string>
+    <string name="alert_title">Enter location TAG</string>
+    <string name="location_tag">Location Tag</string>
+    <string name="ok_but">OK</string>
+    <string name="file_name">File Name</string>
+
 </resources>

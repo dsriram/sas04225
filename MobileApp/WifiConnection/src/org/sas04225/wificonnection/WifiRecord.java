@@ -10,6 +10,8 @@ import org.sas04225.proto.WifiScanResultProto.AccessPoint;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder;
 
+import com.google.protobuf.Message;
+
 public class WifiRecord implements RadioMapStorage {
 
 	private String tag;
@@ -41,7 +43,7 @@ public class WifiRecord implements RadioMapStorage {
 		WifiScanResult result = scanresult.build();
 		
 		try{
-			result.writeTo(out);
+			WifiRecord.writeMessage(out, result);
 		}catch(IOException e)
 		{
 			android.util.Log.e(tag, "Unable to add location \'location_tag\'", e);
@@ -56,6 +58,20 @@ public class WifiRecord implements RadioMapStorage {
 		out.flush();
 		out.close();
 	}
+	
+	public static void writeMessage(OutputStream out, Message msg) throws IOException {
+        byte[] data = msg.toByteArray();
+        int len = data.length;
+
+        out.write(len);
+        out.write(len >> 8);
+        out.write(len >> 16);
+        out.write(len >> 24);
+
+        out.write(data);
+
+        out.flush();
+    }
 
 }
 
