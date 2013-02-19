@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Hashtable;
 
 
+
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
 
 import android.annotation.SuppressLint;
@@ -50,7 +51,7 @@ import android.widget.Toast;
 	 private static final String TAG = "DialogActivity";
      public static final int DLG_EXAMPLE1 = 0;
      private static final int TEXT_ID = 0;
-     ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+     
 		
 	private WifiManager wifi;
 	
@@ -58,6 +59,7 @@ import android.widget.Toast;
 
 	WifiScanAsync asyncTask;
 	WifiRecord wifirec;
+	ProgressBar progressBar1;
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -65,8 +67,11 @@ import android.widget.Toast;
 		
 			
 		 setContentView(R.layout.activity_main);
+		 progressBar1.findViewById(R.id.progressBar1);
+		 progressBar1.setVisibility(View.INVISIBLE);
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
 		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		 
 		 File root = Environment.getExternalStorageDirectory();
 			File record_dir1 = new File(root.getAbsolutePath()+"/RadioMapStorage");
 			record_dir1.mkdirs();
@@ -76,7 +81,7 @@ import android.widget.Toast;
 			filename = record_dir+"/"+fname;
 		 wifirec = new WifiRecord(filename);
 		 asyncTask = new WifiScanAsync(wifi);
-		 progressBar1.setVisibility(View.INVISIBLE);
+		
 			
          try {
         	
@@ -154,7 +159,8 @@ import android.widget.Toast;
                     	 rssid[i]=RSSID[i].intValue();
                      }
                      wifirec.addLocation(value, BSSID,rssid );
-                    
+                     
+         			
               
                      return;
                  }
@@ -176,10 +182,12 @@ import android.widget.Toast;
             
 
 			public void onClick(View v) {
+			 
+					progressBar1.setVisibility(View.VISIBLE);
 				
 				//popup.show(getSupportFragmentManager(),"popup");
             	//wifi.startScan();
-				 
+				  
             	Toast toast = Toast.makeText(getApplicationContext(),  "SCANNING....PLS WAIT!!!", Toast.LENGTH_SHORT);
             	toast.show();
             	 
@@ -208,6 +216,8 @@ import android.widget.Toast;
 //            	 Log.i("Scan Results:", disp);
          }
 		});
+         
+			progressBar1.setVisibility(View.VISIBLE);
          return builder.create();   
      }
 	
@@ -257,7 +267,7 @@ this.wifi = wifi;
  
 protected Hashtable<String, Integer> doInBackground(Void... params) {
             wifi.startScan();
-           progressBar1.setVisibility(View.VISIBLE);
+           
            	
            	Log.d("WifiScanAsync","Scanning.. Thread sleep()");
                
@@ -277,9 +287,9 @@ protected Hashtable<String, Integer> doInBackground(Void... params) {
                      result.put(scanResult.BSSID,scanResult.level);
                     Log.d("ScanResult"," "+scanResult.BSSID+" "+scanResult.level+"dBm");
             }
-			progressBar1.setVisibility(View.VISIBLE);
 			TextView textView1 = (TextView) findViewById(R.id.textView1);
-			textView1.setText(result.toString());
+ 			textView1.setText(result.toString());
+ 			textView1.setVisibility(View.INVISIBLE);
 			
             return result;
 }
