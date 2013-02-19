@@ -1,6 +1,8 @@
 package org.sas04225.wificonnection;
 
 
+
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 public class MainActivity1 extends Activity {
 
@@ -18,6 +21,8 @@ public class MainActivity1 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity1);
+        ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+		progressBar1.setVisibility(View.INVISIBLE);
         
     }
        
@@ -28,6 +33,7 @@ public class MainActivity1 extends Activity {
         	Intent a = new Intent(MainActivity1.this,MainActivity.class);
         	final String fname=Urlis.getText().toString();
         	a.putExtra("fileName",fname );
+  
 			startActivity(a);
             // Creates the dialog if necessary, then shows it.
             // Will show the same dialog if called multiple times.
