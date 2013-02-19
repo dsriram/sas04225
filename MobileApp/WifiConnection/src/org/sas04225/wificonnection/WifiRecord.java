@@ -10,6 +10,8 @@ import org.sas04225.proto.WifiScanResultProto.AccessPoint;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder;
 
+import android.util.Log;
+
 import com.google.protobuf.Message;
 
 public class WifiRecord implements RadioMapStorage {
@@ -62,7 +64,6 @@ public class WifiRecord implements RadioMapStorage {
 	public static void writeMessage(OutputStream out, Message msg) throws IOException {
         byte[] data = msg.toByteArray();
         int len = data.length;
-
         out.write(len);
         out.write(len >> 8);
         out.write(len >> 16);

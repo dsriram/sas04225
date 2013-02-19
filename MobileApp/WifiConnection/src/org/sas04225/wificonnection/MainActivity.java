@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Hashtable;
+
+
 import org.sas04225.wificonnection.AlertPopupDialogue.NoticeDialogListener;
 
 import android.annotation.SuppressLint;
@@ -30,6 +32,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,8 +50,8 @@ import android.widget.Toast;
 	 private static final String TAG = "DialogActivity";
      public static final int DLG_EXAMPLE1 = 0;
      private static final int TEXT_ID = 0;
-
-	
+     ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+		
 	private WifiManager wifi;
 	
 	private long TIMEOUT = 4000;
@@ -65,33 +68,28 @@ import android.widget.Toast;
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
 		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		 File root = Environment.getExternalStorageDirectory();
-			File record_dir1 = new File(root.getAbsolutePath()+"/WifiRecording");{
-			if (!record_dir1.exists())
-				
-			{
-				record_dir1.mkdir();
-			}
+			File record_dir1 = new File(root.getAbsolutePath()+"/RadioMapStorage");
+			record_dir1.mkdirs();
 			this.record_dir = record_dir1.getAbsolutePath();
 			Intent a= getIntent();
 	         String fname = a.getStringExtra("fileName");
-			filename = record_dir1.getAbsolutePath()+"/"+fname;
+			filename = record_dir+"/"+fname;
 		 wifirec = new WifiRecord(filename);
 		 asyncTask = new WifiScanAsync(wifi);
-		 
+		 progressBar1.setVisibility(View.INVISIBLE);
+			
          try {
         	
 			wifirec.init();
 			 Log.i("init()wrking", fname);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log.i("init() not working", fname);
-			e.printStackTrace();
+			Log.e("init()", "pblm", e);
 		}
          
          Toast toast = Toast.makeText(getApplicationContext(),  "Sleep time: "+this.TIMEOUT+"ms", Toast.LENGTH_SHORT);
      	toast.show();
-			}
-     	}
+	}
      	 @Override
          protected Dialog onCreateDialog(int id) {
       
@@ -259,6 +257,7 @@ this.wifi = wifi;
  
 protected Hashtable<String, Integer> doInBackground(Void... params) {
             wifi.startScan();
+           progressBar1.setVisibility(View.VISIBLE);
            	
            	Log.d("WifiScanAsync","Scanning.. Thread sleep()");
                
@@ -278,7 +277,10 @@ protected Hashtable<String, Integer> doInBackground(Void... params) {
                      result.put(scanResult.BSSID,scanResult.level);
                     Log.d("ScanResult"," "+scanResult.BSSID+" "+scanResult.level+"dBm");
             }
-            
+			progressBar1.setVisibility(View.VISIBLE);
+			TextView textView1 = (TextView) findViewById(R.id.textView1);
+			textView1.setText(result.toString());
+			
             return result;
 }
  
