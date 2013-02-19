@@ -41,7 +41,7 @@ public class WifiRecord implements RadioMapStorage {
 			scanresult.addResult(ap);
 		}
 		WifiScanResult result = scanresult.build();
-		
+		android.util.Log.e("tagg "+out,""+ result);
 		try{
 			WifiRecord.writeMessage(out, result);
 		}catch(IOException e)

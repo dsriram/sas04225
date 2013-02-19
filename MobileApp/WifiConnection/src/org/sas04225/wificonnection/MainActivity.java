@@ -51,7 +51,7 @@ import android.widget.Toast;
 	
 	private WifiManager wifi;
 	
-	private long TIMEOUT = 8000;
+	private long TIMEOUT = 4000;
 
 	WifiScanAsync asyncTask;
 	WifiRecord wifirec;
@@ -65,7 +65,7 @@ import android.widget.Toast;
 		 final TextView Res = (TextView) findViewById(R.id.textView1);
 		 wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		 File root = Environment.getExternalStorageDirectory();
-			File record_dir1 = new File(root.getAbsolutePath(),"/WifiRecording");{
+			File record_dir1 = new File(root.getAbsolutePath()+"/WifiRecording");{
 			if (!record_dir1.exists())
 				
 			{
@@ -74,14 +74,15 @@ import android.widget.Toast;
 			this.record_dir = record_dir1.getAbsolutePath();
 			Intent a= getIntent();
 	         String fname = a.getStringExtra("fileName");
-			filename = fname;
-		 wifirec = new WifiRecord(fname);
+			filename = record_dir1.getAbsolutePath()+"/"+fname;
+		 wifirec = new WifiRecord(filename);
 		 asyncTask = new WifiScanAsync(wifi);
 		 
          try {
 			wifirec.init();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			Log.e("init() not working", fname);
 			e.printStackTrace();
 		}
          
