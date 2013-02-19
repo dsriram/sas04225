@@ -53,3 +53,4 @@ build/
 dist/
 nbproject/private
 /ServerSideApp/RecognitionServer/nbproject/private/
+/Matlab/WifiRecordReader/nbproject/private/
