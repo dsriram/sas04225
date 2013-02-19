@@ -15,11 +15,11 @@ import com.google.protobuf.Message;
 public class WifiRecord implements RadioMapStorage {
 
 	private String tag;
-	private File filePath;
+	private String filePath;
 	boolean recording=true;
 	OutputStream out;
 
-	public WifiRecord(File record_dir1 ){
+	public WifiRecord(String record_dir1 ){
 
 		this.filePath = record_dir1;
 		this.tag= "WIFI RECORDING:";

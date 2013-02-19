@@ -74,8 +74,8 @@ import android.widget.Toast;
 			this.record_dir = record_dir1.getAbsolutePath();
 			Intent a= getIntent();
 	         String fname = a.getStringExtra("fileName");
-			filename = fname;}
-		 wifirec = new WifiRecord(record_dir1);
+			filename = fname;
+		 wifirec = new WifiRecord(fname);
 		 asyncTask = new WifiScanAsync(wifi);
 		 
          try {
@@ -87,6 +87,7 @@ import android.widget.Toast;
          
          Toast toast = Toast.makeText(getApplicationContext(),  "Sleep time: "+this.TIMEOUT+"ms", Toast.LENGTH_SHORT);
      	toast.show();
+			}
      	}
      	 @Override
          protected Dialog onCreateDialog(int id) {
