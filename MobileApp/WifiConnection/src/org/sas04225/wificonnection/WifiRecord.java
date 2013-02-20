@@ -10,16 +10,18 @@ import org.sas04225.proto.WifiScanResultProto.AccessPoint;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult;
 import org.sas04225.proto.WifiScanResultProto.WifiScanResult.Builder;
 
+import android.util.Log;
+
 import com.google.protobuf.Message;
 
 public class WifiRecord implements RadioMapStorage {
 
 	private String tag;
-	private File filePath;
+	private String filePath;
 	boolean recording=true;
 	OutputStream out;
 
-	public WifiRecord(File record_dir1 ){
+	public WifiRecord(String record_dir1 ){
 
 		this.filePath = record_dir1;
 		this.tag= "WIFI RECORDING:";
@@ -41,7 +43,7 @@ public class WifiRecord implements RadioMapStorage {
 			scanresult.addResult(ap);
 		}
 		WifiScanResult result = scanresult.build();
-		
+		android.util.Log.e("tagg "+out,""+ result);
 		try{
 			WifiRecord.writeMessage(out, result);
 		}catch(IOException e)
@@ -62,7 +64,6 @@ public class WifiRecord implements RadioMapStorage {
 	public static void writeMessage(OutputStream out, Message msg) throws IOException {
         byte[] data = msg.toByteArray();
         int len = data.length;
-
         out.write(len);
         out.write(len >> 8);
         out.write(len >> 16);
