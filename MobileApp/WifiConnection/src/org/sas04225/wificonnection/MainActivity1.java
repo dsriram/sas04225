@@ -30,8 +30,7 @@ public class MainActivity1 extends Activity {
         @SuppressWarnings("deprecation")
 		public void onButtonClick(View button) {
         	
-        	if ((wifi.isWifiEnabled()) && (wifi.getConnectionInfo() != null)
-    				&& (wifi.getConnectionInfo().getIpAddress() != 0)) {
+        	if (wifi.isWifiEnabled()) {
         		EditText Urlis=(EditText)findViewById(R.id.location_tag);
             	Intent a = new Intent(MainActivity1.this,MainActivity.class);
             	final String fname=Urlis.getText().toString();
