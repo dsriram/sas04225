@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 		Intent a = getIntent();
 		String fname = a.getStringExtra("fileName");
 		filename = record_dir + "/" + fname;
-		wifirec = new WifiRecord(new File(filename));
+		wifirec = new WifiRecord(filename);
 
 		try {
 			wifirec.init();
