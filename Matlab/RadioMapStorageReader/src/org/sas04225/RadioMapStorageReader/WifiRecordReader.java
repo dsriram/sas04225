@@ -1,4 +1,4 @@
-package org.sas04225.WifiRecordReader;
+package org.sas04225.RadioMapStorageReader;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.File;

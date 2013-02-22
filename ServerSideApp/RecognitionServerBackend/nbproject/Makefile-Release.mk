@@ -36,8 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/ImageLookupWorker.o \
-	${OBJECTDIR}/LookupResult.pb.o \
 	${OBJECTDIR}/RecognitionServerBackendInit.pb.o \
+	${OBJECTDIR}/LookupResult.pb.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/LookupQuery.pb.o
 
@@ -71,15 +71,15 @@ ${OBJECTDIR}/ImageLookupWorker.o: ImageLookupWorker.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ImageLookupWorker.o ImageLookupWorker.cpp
 
-${OBJECTDIR}/LookupResult.pb.o: LookupResult.pb.cc 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/LookupResult.pb.o LookupResult.pb.cc
-
 ${OBJECTDIR}/RecognitionServerBackendInit.pb.o: RecognitionServerBackendInit.pb.cc 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/RecognitionServerBackendInit.pb.o RecognitionServerBackendInit.pb.cc
+
+${OBJECTDIR}/LookupResult.pb.o: LookupResult.pb.cc 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/LookupResult.pb.o LookupResult.pb.cc
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
