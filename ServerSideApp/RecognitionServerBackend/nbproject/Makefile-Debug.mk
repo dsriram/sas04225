@@ -43,28 +43,30 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-O3
+CFLAGS=-m64 -O3
 
 # CC Compiler Flags
-CCFLAGS=-m64 -O3
-CXXFLAGS=-m64 -O3
+CCFLAGS=-m64 -O3 -parallel
+CXXFLAGS=-m64 -O3 -parallel
 
 # Fortran Compiler Flags
 FFLAGS=
 
 # Assembler Flags
-ASFLAGS=
+ASFLAGS=--64
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs opencv` `pkg-config --libs protobuf`  
+LDLIBSOPTIONS=`pkg-config --libs opencv` `pkg-config --libs protobuf` /opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/libiomp5.so  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend
 
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend: /opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/libiomp5.so
+
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	icpc -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/recognitionserverbackend ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/ImageLookupWorker.o: ImageLookupWorker.cpp 
 	${MKDIR} -p ${OBJECTDIR}

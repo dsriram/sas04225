@@ -108,10 +108,13 @@ int main(int argc, char** argv) {
         {
             break;
         }
+        t = (double) getTickCount();
         org::sas04225::RecognitionServerBackend::ImageLookupWorker worker(query.path(),query.request_id());
         worker.computeDescriptors();
         worker.lookup(flann_index);
         LookupResult result = worker.getResult();
+        t = ((double) getTickCount() - t) / getTickFrequency();
+        log<<"Query ID "<<query.request_id()<< " took "<<t<<" s"<<endl;
         sendResult(result);
     }
     

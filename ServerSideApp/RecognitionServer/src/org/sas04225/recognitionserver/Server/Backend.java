@@ -29,6 +29,9 @@ public class Backend {
         try {
             final ProcessBuilder b = new ProcessBuilder(new String[]{backend_exe});
             b.redirectError(ProcessBuilder.Redirect.INHERIT);
+            String path = b.environment().get("LD_LIBRARY_PATH");
+            path += ":/opt/intel/lib/intel64/";
+            b.environment().put("LD_LIBRARY_PATH", path);
             p = b.start();
             pipe_out = p.getOutputStream();
             pipe_in = p.getInputStream();

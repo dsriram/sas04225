@@ -52,17 +52,23 @@
       </toolsSet>
       <compileType>
         <cTool>
+          <architecture>2</architecture>
           <commandLine>-O3</commandLine>
         </cTool>
         <ccTool>
           <architecture>2</architecture>
           <standard>8</standard>
-          <commandLine>-O3</commandLine>
+          <commandLine>-O3 -parallel</commandLine>
         </ccTool>
+        <asmTool>
+          <architecture>2</architecture>
+        </asmTool>
         <linkerTool>
+          <commandlineTool>icpc</commandlineTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
             <linkerOptionItem>`pkg-config --libs protobuf`</linkerOptionItem>
+            <linkerLibFileItem>/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/libiomp5.so</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
