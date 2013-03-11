@@ -38,6 +38,7 @@ public class Main {
     
                final Hashtable<String,Integer> Finvec= new Hashtable<String,Integer>(){
                  Vector<Integer>[] matrix;
+                 
                   
                 };
                 
