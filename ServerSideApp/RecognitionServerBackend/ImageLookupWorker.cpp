@@ -7,14 +7,15 @@ using namespace cv;
 int ImageLookupWorker::k = 8;
 int ImageLookupWorker::dist_threshold = 75;
 
+cv::FREAK extractor(true, true, 22.0f, 4);
+cv::BRISK detector_agast(30, 5);
+
 ImageLookupWorker::ImageLookupWorker(std::string queryImage, uint64_t request_id) {
     this->queryImage = queryImage;
     this->request_id = request_id;
 }
 
 void ImageLookupWorker::computeDescriptors() {
-    cv::FREAK extractor(true, true, 22.0f, 4);
-    cv::BRISK detector_agast(30, 5);
     Mat _query_img = imread(queryImage, CV_LOAD_IMAGE_GRAYSCALE);
     float scalex = 640.0 / _query_img.cols;
     float scaley = 480.0 / _query_img.rows;
