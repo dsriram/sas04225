@@ -6,6 +6,8 @@ package org.sas04225.recognitionserver.Server;
 
 import com.google.protobuf.ByteString;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.sas04225.proto.LookupQueryProto;
@@ -30,6 +32,11 @@ public class ImageLookupServer {
         bcknd = backend;
     }
     
+    public void startServer(int port)
+    {
+        
+    }
+    
     public void testLookup()
     {
         try {
@@ -41,24 +48,38 @@ public class ImageLookupServer {
             Backend.writeMessage(bcknd.pipe_out, lukqb.build());
             byte[] res_data = Backend.readMessageData(bcknd.pipe_in);
             LookupResultProto.LookupResult result = LookupResultProto.LookupResult.parseFrom(res_data);
-            processResult(result);
+            System.out.println(processResult0(result));
         } catch (IOException ex) {
             Logger.getLogger(ImageLookupServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private void processResult(LookupResultProto.LookupResult result)
+    private String processResult0(LookupResultProto.LookupResult result)
     {
         int i = 0;
         System.out.println("Total matches: "+ result.getMatchesCount());
+        HashMap<Integer,Integer> matches = new HashMap<>(50);
         for(DMatch match : result.getMatchesList())
         {
             int grpIdx = indxLukUp.lookup(match.getTrainIdx());
-            String grpName = grpLukUp.lookup(grpIdx);
-            if(grpName.equals("stc-notebook"))
-                i++;
-            System.out.println(grpName);
+            if(matches.containsKey(grpIdx)) {
+                int count = matches.get(grpIdx)+1;
+                matches.put(grpIdx, count);
+            }
+            else {
+                matches.put(grpIdx, 1);
+            }
         }
-        System.out.println("True matches: "+ i);
+        int maxCountGroup = 0, maxCount = 0;
+        for (Map.Entry<Integer, Integer> entry : matches.entrySet()) {
+            int grp = entry.getKey();
+            int count = entry.getValue();
+            if(count>maxCount)
+            {
+                maxCount = count;
+                maxCountGroup = grp;
+            }
+        }
+        return grpLukUp.lookup(maxCountGroup);
     }
 }

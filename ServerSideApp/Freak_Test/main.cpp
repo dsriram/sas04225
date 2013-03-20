@@ -65,8 +65,8 @@ int main(int argc, char** argv) {
     // Load images
 //    Mat _imgA = imread("/home/sriram/Development/Databases/camera_repo/gurukripa-notebook/0.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 //    Mat _imgC = imread("/home/sriram/Development/Databases/camera_repo/gurukripa-notebook/1.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-    Mat _imgA = imread("/home/sriram/jpeg2000.jp2", CV_LOAD_IMAGE_GRAYSCALE);
-    Mat _imgC = imread("/home/sriram/original.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+    Mat _imgA = imread("/home/sriram/Development/Databases/camera_repo/_10.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+    Mat _imgC = imread("/home/sriram/Development/Databases/camera_repo/0.jpg", CV_LOAD_IMAGE_GRAYSCALE);
     Mat imgA, imgC;
     float scalex_A,scalex_C,scaley_A,scaley_C;
     scalex_A = 640.0/_imgA.cols;
@@ -74,9 +74,9 @@ int main(int argc, char** argv) {
     scaley_A = 480.0/_imgA.rows;
     scaley_C = 768.0/_imgC.rows;
     scaley_C = scalex_C;
-//    scalex_A = scaley_A = 1.0;
+    scalex_A = scaley_A = 1.0;
     resize(_imgA, imgA, Size(), scalex_A, scaley_A);
-    resize(_imgC, imgC, Size(), scalex_C, scaley_C);
+    resize(_imgC, imgC, Size(), scalex_A, scaley_A);
     
 //     Mat imX = Mat::zeros(imgA.size(), CV_8UC3);
 //    Mat imY = Mat::zeros(imgA.size(), CV_8UC3);
@@ -152,6 +152,10 @@ int main(int argc, char** argv) {
     double t = (double) getTickCount();
     detector_agast.detect(imgA, keypointsA);
     detector_agast.detect(imgC, keypointsB);
+//    mser.detect(imgA,keypointsA);
+//    mser.detect(imgC,keypointsB);
+//    detector0.detect(imgA,keypointsA);
+//    detector0.detect(imgC,keypointsB);
     SurfDescriptorExtractor extractor0;
 
     //    Mat descriptors_1, descriptors_2;
@@ -213,7 +217,7 @@ int main(int argc, char** argv) {
     
     std::vector<DMatch> matches0;
     
-    int threshold = result[10].distance;
+    int threshold = result[4].distance;
     std::cout<<"Matches count:"<<matches_flann.size()<<std::endl;
     for (int i = 0; i < matches_flann.size(); i++) {
         //cout<<matches_flann[i].distance<<endl;
