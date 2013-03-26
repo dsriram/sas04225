@@ -107,4 +107,8 @@ public class Backend {
     {
         p.waitFor();
     }
+    
+    public void endProcess() {
+        p.destroy();
+    }
 }

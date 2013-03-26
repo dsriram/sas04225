@@ -34,5 +34,6 @@ public class RecognitionServer {
         bcknd.initBackend(b.build());
         ImageLookupServer server = new ImageLookupServer(bcknd, idxLookup, groupLookup);
         server.testLookup();
+        bcknd.endProcess();
     }
 }
