@@ -2,12 +2,11 @@ package org.sas04225.cameraapp;
 
 import java.io.IOException;
 
-import android.R;
-import android.os.Bundle;
+import org.sas04225.cameraapp.R;
 import android.app.Activity;
-import android.view.Menu;
-import android.hardware.Camera;
 import android.graphics.PixelFormat;
+import android.hardware.Camera;
+import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -24,7 +23,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_item);
+		setContentView(R.layout.activity_main);
 		Button buttonStartCameraPreview = (Button)findViewById(R.id.button1);
 	       Button buttonStopCameraPreview = (Button)findViewById(R.id.button2);
 	       getWindow().setFormat(PixelFormat.UNKNOWN);
@@ -40,6 +39,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 				// TODO Auto-generated method stub
 				if (!preview){
 					camera= Camera.open();
+					int rotation = 90; //90 degrees clockwise
+					camera.setDisplayOrientation(rotation);
 					if (camera != null){
 						try{
 							camera.setPreviewDisplay(surfaceholder);
