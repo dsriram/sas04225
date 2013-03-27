@@ -38,6 +38,7 @@ public class ServiceBroadcaster implements Runnable {
         }
         return addr;
     }
+    
     private List<ServiceInfo> services;
     private JmDNS jmDNS;
     private InetAddress bindAddress;
@@ -78,4 +79,6 @@ public class ServiceBroadcaster implements Runnable {
     public void addService(ServiceInfo info) throws IOException {
         jmDNS.registerService(info);
     }
+    
+    
 }
