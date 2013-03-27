@@ -56,6 +56,8 @@ public class Main {
         row = -1;
         File readings_folder = new File(WifiReadingsFolder);
         File[] files = readings_folder.listFiles();
+        java.util.TreeSet<String> access_pts = new TreeSet<>();
+        java.util.TreeSet<String> locations = new TreeSet<>();
         for (File f_name : files) {
             System.out.println("name" + f_name.getName());
 //       for(i=0;i<2;i++)
@@ -68,22 +70,33 @@ public class Main {
                 String location = res.getLocationTag();
                 System.out.println(WifiReadingsFolder + f_name.getName());
                 System.out.println("Location :" + location);
-                if (!(loc_tag.containsKey(location))) {
-                    loc_tag.put(location, no_of_loc++);
-                }
+//                if (!(loc_tag.containsKey(location))) {
+//                    loc_tag.put(location, no_of_loc++);
+                    locations.add(location);
+//                }
                 //add to hashtable and locationtag file
                 List<AccessPoint> accsPts = res.getResultList();
                 for (AccessPoint pt : accsPts) {
                     System.out.println("bssid: " + pt.getBssid() + " level: " + pt.getLevel());
-                    if (!(bssids.containsKey(pt.getBssid()))) {
-                        bssids.put(pt.getBssid(), no_of_ids++);
-                    }
+//                    if (!(bssids.containsKey(pt.getBssid()))) {
+//                        bssids.put(pt.getBssid(), no_of_ids++);
+                        access_pts.add(pt.getBssid());
+//                    }
                 }
 
             }
 //           }
 
         }
+        Iterator<String> itr = access_pts.iterator();
+        while(itr.hasNext()) {
+            bssids.put(itr.next(), no_of_ids++);
+        }
+        itr = locations.iterator();
+        while (itr.hasNext()) {
+            loc_tag.put(itr.next(), no_of_loc++);
+        }
+        
         //print bssids,loc_tags and write to file bssids and loc_tag.csv in c drive
         System.out.println("New hash locations: " + loc_tag);//the reference #table
         System.out.println("New hash table value: " + bssids);//the reference #table
