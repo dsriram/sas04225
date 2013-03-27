@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 
 	private WifiManager wifi;
 
-	private long TIMEOUT = 4000;
+	private long TIMEOUT = 2500;
 
 	WifiScanAsync asyncTask;
 	WifiRecord wifirec;
@@ -191,7 +191,7 @@ public class MainActivity extends Activity {
 	private class WifiScanAsync extends
 			AsyncTask<Void, Void, Hashtable<String, Integer>> {
 
-		public final long TIMEOUT = 5000;
+		public final long TIMEOUT = 2500;
 
 		android.net.wifi.WifiManager wifi;
 		public java.util.Hashtable<String, Integer> result;
