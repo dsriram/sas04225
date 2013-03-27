@@ -1,23 +1,38 @@
 package org.sas04225.cameraapp;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import org.sas04225.cameraapp.R;
 import android.app.Activity;
-import android.graphics.PixelFormat;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.protobuf.ByteString;
+import com.google.protobuf.ByteString.Output;
 
-public class MainActivity extends Activity implements SurfaceHolder.Callback{
+
+public class MainActivity extends Activity implements SurfaceHolder.Callback, Camera.PreviewCallback{
 	Camera camera;
 	SurfaceView surfaceview;
 	SurfaceHolder surfaceholder;
 	boolean preview = false;
+	int previewFormat;
+	private Timer t0;
+	private volatile boolean grabFrame;
+	TimerTask t0_task;
 	
 
 	@Override
@@ -26,7 +41,15 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 		setContentView(R.layout.activity_main);
 		Button buttonStartCameraPreview = (Button)findViewById(R.id.button1);
 	       Button buttonStopCameraPreview = (Button)findViewById(R.id.button2);
-	       getWindow().setFormat(PixelFormat.UNKNOWN);
+	       grabFrame = false;
+	       t0 = new Timer("FrameGrab");
+	       t0_task = new TimerTask(){
+
+			@Override
+			public void run() {
+				grabFrame = true;
+				
+			}};
 	       surfaceview = (SurfaceView)findViewById(R.id.surfaceview);
 	       surfaceholder = surfaceview.getHolder();
 	       surfaceholder.addCallback(this);
@@ -45,7 +68,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 						try{
 							camera.setPreviewDisplay(surfaceholder);
 						       camera.startPreview();
+						       previewFormat = camera.getParameters().getPreviewFormat();
 						       preview = true;
+						       t0.scheduleAtFixedRate(t0_task, 1000, 1000);
 						}catch (IOException e){
 							e.printStackTrace();
 							
@@ -65,7 +90,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 				     camera.release();
 				     camera = null;
 				     preview=false;
-				
+				     t0.cancel();
+				     t0.purge();
 			}
 	    	  
 	      }});
@@ -94,6 +120,32 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onPreviewFrame(byte[] data, Camera camera) {
+		if(grabFrame) {
+		Size s = camera.getParameters().getPreviewSize();
+	    if (previewFormat == ImageFormat.NV21)
+	    {
+	        Rect rect = new Rect(0, 0, s.width, s.height); 
+	        YuvImage img = new YuvImage(data, ImageFormat.NV21, s.width, s.height, null);
+	        try 
+	        {
+	        	Output b_output = ByteString.newOutput();
+	            img.compressToJpeg(rect, 95, b_output);
+	            b_output.flush();
+	            b_output.close();
+	        }catch (IOException e) 
+	        {
+	            e.printStackTrace();
+	        }finally{
+	        	grabFrame = false;
+	        }
+	    }
+		}
 		
 	}
 
