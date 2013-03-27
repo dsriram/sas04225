@@ -37,12 +37,12 @@ void protobuf_ShutdownFile_RecognitionServerQuery_2eproto();
 class Query;
 
 enum QueryType {
-  JPEG_IMAGE = 0,
-  FREAK_DESCRIPTOR = 1
+  LOCATION_BASED_QUERY = 0,
+  GENERAL_QUERY = 1
 };
 bool QueryType_IsValid(int value);
-const QueryType QueryType_MIN = JPEG_IMAGE;
-const QueryType QueryType_MAX = FREAK_DESCRIPTOR;
+const QueryType QueryType_MIN = LOCATION_BASED_QUERY;
+const QueryType QueryType_MAX = GENERAL_QUERY;
 const int QueryType_ARRAYSIZE = QueryType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* QueryType_descriptor();
@@ -54,6 +54,25 @@ inline bool QueryType_Parse(
     const ::std::string& name, QueryType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<QueryType>(
     QueryType_descriptor(), name, value);
+}
+enum QueryDataType {
+  JPEG_IMAGE = 0,
+  FREAK_DESCRIPTOR = 1
+};
+bool QueryDataType_IsValid(int value);
+const QueryDataType QueryDataType_MIN = JPEG_IMAGE;
+const QueryDataType QueryDataType_MAX = FREAK_DESCRIPTOR;
+const int QueryDataType_ARRAYSIZE = QueryDataType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* QueryDataType_descriptor();
+inline const ::std::string& QueryDataType_Name(QueryDataType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    QueryDataType_descriptor(), value);
+}
+inline bool QueryDataType_Parse(
+    const ::std::string& name, QueryDataType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<QueryDataType>(
+    QueryDataType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -125,10 +144,24 @@ class Query : public ::google::protobuf::Message {
   inline org::sas04225::proto::QueryType querytype() const;
   inline void set_querytype(org::sas04225::proto::QueryType value);
   
-  // required bytes queryData = 3;
+  // required .org.sas04225.proto.QueryDataType queryDataType = 3;
+  inline bool has_querydatatype() const;
+  inline void clear_querydatatype();
+  static const int kQueryDataTypeFieldNumber = 3;
+  inline org::sas04225::proto::QueryDataType querydatatype() const;
+  inline void set_querydatatype(org::sas04225::proto::QueryDataType value);
+  
+  // required uint32 location_id = 4;
+  inline bool has_location_id() const;
+  inline void clear_location_id();
+  static const int kLocationIdFieldNumber = 4;
+  inline ::google::protobuf::uint32 location_id() const;
+  inline void set_location_id(::google::protobuf::uint32 value);
+  
+  // required bytes queryData = 5;
   inline bool has_querydata() const;
   inline void clear_querydata();
-  static const int kQueryDataFieldNumber = 3;
+  static const int kQueryDataFieldNumber = 5;
   inline const ::std::string& querydata() const;
   inline void set_querydata(const ::std::string& value);
   inline void set_querydata(const char* value);
@@ -142,17 +175,23 @@ class Query : public ::google::protobuf::Message {
   inline void clear_has_request_id();
   inline void set_has_querytype();
   inline void clear_has_querytype();
+  inline void set_has_querydatatype();
+  inline void clear_has_querydatatype();
+  inline void set_has_location_id();
+  inline void clear_has_location_id();
   inline void set_has_querydata();
   inline void clear_has_querydata();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::google::protobuf::uint64 request_id_;
-  ::std::string* querydata_;
   int querytype_;
+  int querydatatype_;
+  ::std::string* querydata_;
+  ::google::protobuf::uint32 location_id_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_RecognitionServerQuery_2eproto();
   friend void protobuf_AssignDesc_RecognitionServerQuery_2eproto();
@@ -213,15 +252,60 @@ inline void Query::set_querytype(org::sas04225::proto::QueryType value) {
   querytype_ = value;
 }
 
-// required bytes queryData = 3;
-inline bool Query::has_querydata() const {
+// required .org.sas04225.proto.QueryDataType queryDataType = 3;
+inline bool Query::has_querydatatype() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Query::set_has_querydata() {
+inline void Query::set_has_querydatatype() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Query::clear_has_querydata() {
+inline void Query::clear_has_querydatatype() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Query::clear_querydatatype() {
+  querydatatype_ = 0;
+  clear_has_querydatatype();
+}
+inline org::sas04225::proto::QueryDataType Query::querydatatype() const {
+  return static_cast< org::sas04225::proto::QueryDataType >(querydatatype_);
+}
+inline void Query::set_querydatatype(org::sas04225::proto::QueryDataType value) {
+  GOOGLE_DCHECK(org::sas04225::proto::QueryDataType_IsValid(value));
+  set_has_querydatatype();
+  querydatatype_ = value;
+}
+
+// required uint32 location_id = 4;
+inline bool Query::has_location_id() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Query::set_has_location_id() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Query::clear_has_location_id() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Query::clear_location_id() {
+  location_id_ = 0u;
+  clear_has_location_id();
+}
+inline ::google::protobuf::uint32 Query::location_id() const {
+  return location_id_;
+}
+inline void Query::set_location_id(::google::protobuf::uint32 value) {
+  set_has_location_id();
+  location_id_ = value;
+}
+
+// required bytes queryData = 5;
+inline bool Query::has_querydata() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Query::set_has_querydata() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Query::clear_has_querydata() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Query::clear_querydata() {
   if (querydata_ != &::google::protobuf::internal::kEmptyString) {
@@ -285,6 +369,10 @@ namespace protobuf {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< org::sas04225::proto::QueryType>() {
   return org::sas04225::proto::QueryType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< org::sas04225::proto::QueryDataType>() {
+  return org::sas04225::proto::QueryDataType_descriptor();
 }
 
 }  // namespace google

@@ -10,20 +10,20 @@ public final class RecognitionServerQueryProto {
   }
   public enum QueryType
       implements com.google.protobuf.ProtocolMessageEnum {
-    JPEG_IMAGE(0, 0),
-    FREAK_DESCRIPTOR(1, 1),
+    LOCATION_BASED_QUERY(0, 0),
+    GENERAL_QUERY(1, 1),
     ;
     
-    public static final int JPEG_IMAGE_VALUE = 0;
-    public static final int FREAK_DESCRIPTOR_VALUE = 1;
+    public static final int LOCATION_BASED_QUERY_VALUE = 0;
+    public static final int GENERAL_QUERY_VALUE = 1;
     
     
     public final int getNumber() { return value; }
     
     public static QueryType valueOf(int value) {
       switch (value) {
-        case 0: return JPEG_IMAGE;
-        case 1: return FREAK_DESCRIPTOR;
+        case 0: return LOCATION_BASED_QUERY;
+        case 1: return GENERAL_QUERY;
         default: return null;
       }
     }
@@ -54,7 +54,7 @@ public final class RecognitionServerQueryProto {
     }
     
     private static final QueryType[] VALUES = {
-      JPEG_IMAGE, FREAK_DESCRIPTOR, 
+      LOCATION_BASED_QUERY, GENERAL_QUERY, 
     };
     
     public static QueryType valueOf(
@@ -77,6 +77,75 @@ public final class RecognitionServerQueryProto {
     // @@protoc_insertion_point(enum_scope:org.sas04225.proto.QueryType)
   }
   
+  public enum QueryDataType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    JPEG_IMAGE(0, 0),
+    FREAK_DESCRIPTOR(1, 1),
+    ;
+    
+    public static final int JPEG_IMAGE_VALUE = 0;
+    public static final int FREAK_DESCRIPTOR_VALUE = 1;
+    
+    
+    public final int getNumber() { return value; }
+    
+    public static QueryDataType valueOf(int value) {
+      switch (value) {
+        case 0: return JPEG_IMAGE;
+        case 1: return FREAK_DESCRIPTOR;
+        default: return null;
+      }
+    }
+    
+    public static com.google.protobuf.Internal.EnumLiteMap<QueryDataType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<QueryDataType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<QueryDataType>() {
+            public QueryDataType findValueByNumber(int number) {
+              return QueryDataType.valueOf(number);
+            }
+          };
+    
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return org.sas04225.proto.RecognitionServerQueryProto.getDescriptor().getEnumTypes().get(1);
+    }
+    
+    private static final QueryDataType[] VALUES = {
+      JPEG_IMAGE, FREAK_DESCRIPTOR, 
+    };
+    
+    public static QueryDataType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+    
+    private final int index;
+    private final int value;
+    
+    private QueryDataType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+    
+    // @@protoc_insertion_point(enum_scope:org.sas04225.proto.QueryDataType)
+  }
+  
   public interface QueryOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
@@ -88,7 +157,15 @@ public final class RecognitionServerQueryProto {
     boolean hasQueryType();
     org.sas04225.proto.RecognitionServerQueryProto.QueryType getQueryType();
     
-    // required bytes queryData = 3;
+    // required .org.sas04225.proto.QueryDataType queryDataType = 3;
+    boolean hasQueryDataType();
+    org.sas04225.proto.RecognitionServerQueryProto.QueryDataType getQueryDataType();
+    
+    // required uint32 location_id = 4;
+    boolean hasLocationId();
+    int getLocationId();
+    
+    // required bytes queryData = 5;
     boolean hasQueryData();
     com.google.protobuf.ByteString getQueryData();
   }
@@ -141,11 +218,31 @@ public final class RecognitionServerQueryProto {
       return queryType_;
     }
     
-    // required bytes queryData = 3;
-    public static final int QUERYDATA_FIELD_NUMBER = 3;
+    // required .org.sas04225.proto.QueryDataType queryDataType = 3;
+    public static final int QUERYDATATYPE_FIELD_NUMBER = 3;
+    private org.sas04225.proto.RecognitionServerQueryProto.QueryDataType queryDataType_;
+    public boolean hasQueryDataType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public org.sas04225.proto.RecognitionServerQueryProto.QueryDataType getQueryDataType() {
+      return queryDataType_;
+    }
+    
+    // required uint32 location_id = 4;
+    public static final int LOCATION_ID_FIELD_NUMBER = 4;
+    private int locationId_;
+    public boolean hasLocationId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public int getLocationId() {
+      return locationId_;
+    }
+    
+    // required bytes queryData = 5;
+    public static final int QUERYDATA_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString queryData_;
     public boolean hasQueryData() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     public com.google.protobuf.ByteString getQueryData() {
       return queryData_;
@@ -153,7 +250,9 @@ public final class RecognitionServerQueryProto {
     
     private void initFields() {
       requestId_ = 0L;
-      queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.JPEG_IMAGE;
+      queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.LOCATION_BASED_QUERY;
+      queryDataType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryDataType.JPEG_IMAGE;
+      locationId_ = 0;
       queryData_ = com.google.protobuf.ByteString.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
@@ -166,6 +265,14 @@ public final class RecognitionServerQueryProto {
         return false;
       }
       if (!hasQueryType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasQueryDataType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLocationId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -187,7 +294,13 @@ public final class RecognitionServerQueryProto {
         output.writeEnum(2, queryType_.getNumber());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, queryData_);
+        output.writeEnum(3, queryDataType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, locationId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, queryData_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -208,7 +321,15 @@ public final class RecognitionServerQueryProto {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, queryData_);
+          .computeEnumSize(3, queryDataType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, locationId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, queryData_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -336,10 +457,14 @@ public final class RecognitionServerQueryProto {
         super.clear();
         requestId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.JPEG_IMAGE;
+        queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.LOCATION_BASED_QUERY;
         bitField0_ = (bitField0_ & ~0x00000002);
-        queryData_ = com.google.protobuf.ByteString.EMPTY;
+        queryDataType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryDataType.JPEG_IMAGE;
         bitField0_ = (bitField0_ & ~0x00000004);
+        locationId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        queryData_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -389,6 +514,14 @@ public final class RecognitionServerQueryProto {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
+        result.queryDataType_ = queryDataType_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.locationId_ = locationId_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
         result.queryData_ = queryData_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -412,6 +545,12 @@ public final class RecognitionServerQueryProto {
         if (other.hasQueryType()) {
           setQueryType(other.getQueryType());
         }
+        if (other.hasQueryDataType()) {
+          setQueryDataType(other.getQueryDataType());
+        }
+        if (other.hasLocationId()) {
+          setLocationId(other.getLocationId());
+        }
         if (other.hasQueryData()) {
           setQueryData(other.getQueryData());
         }
@@ -425,6 +564,14 @@ public final class RecognitionServerQueryProto {
           return false;
         }
         if (!hasQueryType()) {
+          
+          return false;
+        }
+        if (!hasQueryDataType()) {
+          
+          return false;
+        }
+        if (!hasLocationId()) {
           
           return false;
         }
@@ -474,8 +621,24 @@ public final class RecognitionServerQueryProto {
               }
               break;
             }
-            case 26: {
-              bitField0_ |= 0x00000004;
+            case 24: {
+              int rawValue = input.readEnum();
+              org.sas04225.proto.RecognitionServerQueryProto.QueryDataType value = org.sas04225.proto.RecognitionServerQueryProto.QueryDataType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                queryDataType_ = value;
+              }
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              locationId_ = input.readUInt32();
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
               queryData_ = input.readBytes();
               break;
             }
@@ -507,7 +670,7 @@ public final class RecognitionServerQueryProto {
       }
       
       // required .org.sas04225.proto.QueryType queryType = 2;
-      private org.sas04225.proto.RecognitionServerQueryProto.QueryType queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.JPEG_IMAGE;
+      private org.sas04225.proto.RecognitionServerQueryProto.QueryType queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.LOCATION_BASED_QUERY;
       public boolean hasQueryType() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
@@ -525,15 +688,60 @@ public final class RecognitionServerQueryProto {
       }
       public Builder clearQueryType() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.JPEG_IMAGE;
+        queryType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryType.LOCATION_BASED_QUERY;
         onChanged();
         return this;
       }
       
-      // required bytes queryData = 3;
+      // required .org.sas04225.proto.QueryDataType queryDataType = 3;
+      private org.sas04225.proto.RecognitionServerQueryProto.QueryDataType queryDataType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryDataType.JPEG_IMAGE;
+      public boolean hasQueryDataType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public org.sas04225.proto.RecognitionServerQueryProto.QueryDataType getQueryDataType() {
+        return queryDataType_;
+      }
+      public Builder setQueryDataType(org.sas04225.proto.RecognitionServerQueryProto.QueryDataType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        queryDataType_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearQueryDataType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        queryDataType_ = org.sas04225.proto.RecognitionServerQueryProto.QueryDataType.JPEG_IMAGE;
+        onChanged();
+        return this;
+      }
+      
+      // required uint32 location_id = 4;
+      private int locationId_ ;
+      public boolean hasLocationId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public int getLocationId() {
+        return locationId_;
+      }
+      public Builder setLocationId(int value) {
+        bitField0_ |= 0x00000008;
+        locationId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearLocationId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        locationId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required bytes queryData = 5;
       private com.google.protobuf.ByteString queryData_ = com.google.protobuf.ByteString.EMPTY;
       public boolean hasQueryData() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       public com.google.protobuf.ByteString getQueryData() {
         return queryData_;
@@ -542,13 +750,13 @@ public final class RecognitionServerQueryProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000010;
         queryData_ = value;
         onChanged();
         return this;
       }
       public Builder clearQueryData() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000010);
         queryData_ = getDefaultInstance().getQueryData();
         onChanged();
         return this;
@@ -580,12 +788,15 @@ public final class RecognitionServerQueryProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\034RecognitionServerQuery.proto\022\022org.sas0" +
-      "4225.proto\"`\n\005Query\022\022\n\nrequest_id\030\001 \002(\004\022" +
-      "0\n\tqueryType\030\002 \002(\0162\035.org.sas04225.proto." +
-      "QueryType\022\021\n\tqueryData\030\003 \002(\014*1\n\tQueryTyp" +
-      "e\022\016\n\nJPEG_IMAGE\020\000\022\024\n\020FREAK_DESCRIPTOR\020\001B" +
-      "1\n\022org.sas04225.protoB\033RecognitionServer" +
-      "QueryProto"
+      "4225.proto\"\257\001\n\005Query\022\022\n\nrequest_id\030\001 \002(\004" +
+      "\0220\n\tqueryType\030\002 \002(\0162\035.org.sas04225.proto" +
+      ".QueryType\0228\n\rqueryDataType\030\003 \002(\0162!.org." +
+      "sas04225.proto.QueryDataType\022\023\n\013location" +
+      "_id\030\004 \002(\r\022\021\n\tqueryData\030\005 \002(\014*8\n\tQueryTyp" +
+      "e\022\030\n\024LOCATION_BASED_QUERY\020\000\022\021\n\rGENERAL_Q" +
+      "UERY\020\001*5\n\rQueryDataType\022\016\n\nJPEG_IMAGE\020\000\022" +
+      "\024\n\020FREAK_DESCRIPTOR\020\001B1\n\022org.sas04225.pr" +
+      "otoB\033RecognitionServerQueryProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -597,7 +808,7 @@ public final class RecognitionServerQueryProto {
           internal_static_org_sas04225_proto_Query_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_sas04225_proto_Query_descriptor,
-              new java.lang.String[] { "RequestId", "QueryType", "QueryData", },
+              new java.lang.String[] { "RequestId", "QueryType", "QueryDataType", "LocationId", "QueryData", },
               org.sas04225.proto.RecognitionServerQueryProto.Query.class,
               org.sas04225.proto.RecognitionServerQueryProto.Query.Builder.class);
           return null;

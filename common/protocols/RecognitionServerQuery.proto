@@ -6,10 +6,17 @@ option java_outer_classname = "RecognitionServerQueryProto";
 message Query {
 	required uint64 request_id = 1;
 	required QueryType queryType = 2;
-	required bytes queryData = 3;
+	required QueryDataType queryDataType = 3;
+	required uint32 location_id = 4;
+	required bytes queryData = 5;
 }
 
 enum QueryType {
+	LOCATION_BASED_QUERY = 0;
+	GENERAL_QUERY = 1;
+}
+
+enum QueryDataType {
 	JPEG_IMAGE = 0;
 	FREAK_DESCRIPTOR = 1;
 }
