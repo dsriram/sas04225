@@ -58,7 +58,7 @@
         <ccTool>
           <architecture>2</architecture>
           <standard>8</standard>
-          <commandLine>-O0</commandLine>
+          <commandLine>-O3 -parallel -openmp</commandLine>
         </ccTool>
         <asmTool>
           <architecture>2</architecture>

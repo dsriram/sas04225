@@ -46,8 +46,8 @@ OBJECTFILES= \
 CFLAGS=-m64 -O3 -parallel -openmp
 
 # CC Compiler Flags
-CCFLAGS=-m64 -O0
-CXXFLAGS=-m64 -O0
+CCFLAGS=-m64 -O3 -parallel -openmp
+CXXFLAGS=-m64 -O3 -parallel -openmp
 
 # Fortran Compiler Flags
 FFLAGS=

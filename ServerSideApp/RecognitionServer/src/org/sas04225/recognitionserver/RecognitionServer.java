@@ -6,9 +6,11 @@ package org.sas04225.recognitionserver;
 
 import java.io.IOException;
 import static org.sas04225.DescriptorSetBuilder.Main.cache_dir;
+import org.sas04225.imagereposerver.ServiceBroadcaster;
 import org.sas04225.proto.RecognitionServerBackendInitProto;
 import org.sas04225.proto.RecognitionServerBackendInitProto.RecognitionServerBackendInit;
 import org.sas04225.recognitionserver.Server.Backend;
+import org.sas04225.recognitionserver.Server.ImageLookupQueryClient;
 import org.sas04225.recognitionserver.Server.ImageLookupServer;
 /**
  *
@@ -30,10 +32,27 @@ public class RecognitionServer {
         b.setDescriptorCount(idxLookup.getTotalDescriptorCount());
         String cache_file = System.getProperty("user.home")+"/"+cache_dir+"/"+"cache";
         b.setCachePath(cache_file);
-        Backend bcknd = new Backend();
+        final Backend bcknd = new Backend();
         bcknd.initBackend(b.build());
+        System.setProperty("tmpfs", "/run/user/sriram/");
         ImageLookupServer server = new ImageLookupServer(bcknd, idxLookup, groupLookup);
         server.testLookup();
-        bcknd.endProcess();
+        Thread imgLUS = server.startServer();
+        System.out.println("ImageLookupServer running at: "+ImageLookupServer.getFirstNonLocalAddress().getHostAddress()+" "+ImageLookupServer.LISTENING_PORT);
+        ServiceBroadcaster brdcaster = new ServiceBroadcaster( "ImageLookupServer", ImageLookupServer.SERVICE_TYPE, ImageLookupServer.LISTENING_PORT, "Image lookup server", ImageLookupServer.getFirstNonLocalAddress());
+        Thread t = new Thread(brdcaster, "mDNS_Broadcaster");
+        t.start();
+        ImageLookupQueryClient testclient = new ImageLookupQueryClient("/home/sriram/Development/Databases/camera_repo/1.jpg");
+        System.out.println(testclient.performLookup());
+        imgLUS.join();
+        t.join();
+        imgLUS.join();
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                bcknd.endProcess();
+            }
+        }));
     }
 }

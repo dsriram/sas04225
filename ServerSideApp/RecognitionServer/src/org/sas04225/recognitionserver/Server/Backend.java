@@ -36,6 +36,7 @@ public class Backend {
             pipe_out = p.getOutputStream();
             pipe_in = p.getInputStream();
             pipe_err = p.getErrorStream();
+            
 //            Backend.startBackendLogger(pipe_err);
         } catch (IOException ex) {
             Logger.getLogger(Backend.class.getName()).log(Level.SEVERE, "Unable to start process", ex);
