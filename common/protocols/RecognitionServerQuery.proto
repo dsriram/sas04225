@@ -1,0 +1,15 @@
+package org.sas04225.proto;
+
+option java_package = "org.sas04225.proto";
+option java_outer_classname = "RecognitionServerQueryProto";
+
+message Query {
+	required uint64 request_id = 1;
+	required QueryType queryType = 2;
+	required bytes queryData = 3;
+}
+
+enum QueryType {
+	JPEG_IMAGE = 0;
+	FREAK_DESCRIPTOR = 1;
+}
