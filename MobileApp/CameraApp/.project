@@ -30,4 +30,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>protocols</name>
+			<type>2</type>
+			<location>/home/sriram/Development/sas04225.git/common/protocols/src/java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

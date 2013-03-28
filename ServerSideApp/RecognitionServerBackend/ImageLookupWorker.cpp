@@ -5,7 +5,7 @@ using namespace org::sas04225::RecognitionServerBackend;
 using namespace cv;
 
 int ImageLookupWorker::k = 8;
-int ImageLookupWorker::dist_threshold = 75;
+int ImageLookupWorker::dist_threshold = 70;
 
 cv::FREAK extractor(true, true, 22.0f, 4);
 cv::BRISK detector_agast(30, 5);
