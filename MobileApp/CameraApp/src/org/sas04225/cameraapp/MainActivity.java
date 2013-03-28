@@ -30,6 +30,7 @@ import org.sas04225.proto.RecognitionServerQueryProto.QueryType;
 import org.sas04225.proto.RecognitionServerResultProto.Result;
 import org.sas04225.proto.RecognitionServerResultProto.Tag;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
@@ -108,6 +109,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 		buttonStartCameraPreview
 				.setOnClickListener(new Button.OnClickListener() {
 
+					@SuppressLint("NewApi")
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
@@ -121,6 +123,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 									camera.setPreviewCallback(cb);
 									previewFormat = camera.getParameters()
 											.getPreviewFormat();
+									Camera.Parameters params = camera.getParameters();
+									params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+									params.setVideoStabilization(true);
+									camera.setParameters(params);
 									preview = true;
 									t0.scheduleAtFixedRate(new TimerTask() {
 
@@ -208,6 +214,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 					try {
 						queries.put(q);
 						Log.d("onPreviewFrame", "added to queue");
+						client = new RecognitionServerClient(serverAddr);
+						client.execute(new Void[]{});
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						Logger.getLogger(MainActivity.class.getName()).log(
@@ -300,13 +308,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			}
 			TextView res = (TextView)findViewById(R.id.textView1);
 			res.setText(lastResult);
-			findViewById(R.id.surfaceview).postDelayed(new Runnable() {
+			/*findViewById(R.id.surfaceview).postDelayed(new Runnable() {
 
 				@Override
 				public void run() {
 					client = new RecognitionServerClient(serverAddr);
 					client.execute(new Void[]{});					
-				}}, 250);
+				}}, 250);*/
 		}
 
 	}

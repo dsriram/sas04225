@@ -29,17 +29,22 @@ void ImageLookupWorker::computeDescriptors() {
 void ImageLookupWorker::lookup(cv::flann::Index* index) {
     Mat results = cv::Mat(descriptors.rows, k, CV_32SC1); // Results index
     Mat dists = cv::Mat(descriptors.rows, k, CV_32SC1);
-    index->knnSearch(descriptors, results, dists, k, cv::flann::SearchParams());
-    queryResult = new std::vector<DMatch > ();
-    for (int i = 0; i < descriptors.rows; i++) {
-        for (int j = 0; j < k; j++) {
-            if (dists.at<int>(i, j) <= dist_threshold) {
-                DMatch match;
-                match.distance = dists.at<int>(i, j);
-                match.queryIdx = i;
-                match.trainIdx = results.at<int>(i, j);
-                match.imgIdx = 0;
-                queryResult->push_back(match);
+    if(descriptors.rows < 1) {
+        return;
+    }
+    else {
+        index->knnSearch(descriptors, results, dists, k, cv::flann::SearchParams());
+        queryResult = new std::vector<DMatch > ();
+        for (int i = 0; i < descriptors.rows; i++) {
+            for (int j = 0; j < k; j++) {
+                if (dists.at<int>(i, j) <= dist_threshold) {
+                    DMatch match;
+                    match.distance = dists.at<int>(i, j);
+                    match.queryIdx = i;
+                    match.trainIdx = results.at<int>(i, j);
+                    match.imgIdx = 0;
+                    queryResult->push_back(match);
+                }
             }
         }
     }
@@ -55,5 +60,11 @@ org::sas04225::proto::LookupResult ImageLookupWorker::getResult() {
         dmatch->set_distance((uint32_t)match.distance);
         dmatch->set_trainidx(match.trainIdx);
     }
+    if(queryResult->size() <1) {
+        org::sas04225::proto::DMatch* dmatch = result.add_matches();
+        dmatch->set_distance((uint32_t)10);
+        dmatch->set_trainidx(0);
+    }
+    
     return result;
 }
