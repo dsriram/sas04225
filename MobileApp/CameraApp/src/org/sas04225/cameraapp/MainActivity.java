@@ -1,11 +1,18 @@
 package org.sas04225.cameraapp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.sas04225.cameraapp.R;
 import android.app.Activity;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -44,6 +51,26 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 					if (camera != null){
 						try{
 							camera.setPreviewDisplay(surfaceholder);
+							Camera.PreviewCallback previewcallback = new Camera.PreviewCallback() {
+								
+								@Override
+								public void onPreviewFrame(byte[] data, Camera camera) {
+									// TODO Auto-generated method stub
+									Camera.Parameters parameters = camera.getParameters();
+									Size size = parameters.getPreviewSize();
+									YuvImage image = new YuvImage(data, ImageFormat.JPEG,size.width,size.height,null);
+									Rect rectangle = new Rect();
+						            rectangle.bottom = size.height;
+						            rectangle.top = 0;
+						            rectangle.left = 0;
+						            rectangle.right = size.width;
+						            ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+						            image.compressToJpeg(rectangle, 100, out2);
+						            
+						            
+
+								}
+							};
 						       camera.startPreview();
 						       preview = true;
 						}catch (IOException e){
@@ -70,6 +97,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback{
 	    	  
 	      }});
 	}
+	
 
 	
 	//public boolean onCreateOptionsMenu(Menu menu) {
