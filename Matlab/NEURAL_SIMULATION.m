@@ -1,0 +1,17 @@
+p=csvread('C:\output_vector1.csv');
+outputs=p(1:14,2);
+outputs=outputs/100;
+inputs=p(1:14,3:64);
+inputs=abs(inputs)/100;
+my_network=load('C:\Program Files\MATLAB\R2011a\my_network.mat');
+my_net=my_network.network1
+check=(inputs(1,:))';
+check1=sim(my_net,check)
+check=(inputs(2,:))';
+check1=sim(my_net,check)
+check=(inputs(3,:))';
+check1=sim(my_net,check)
+check=(inputs(7,:))';
+check1=sim(my_net,check)
+check=(inputs(14,:))';
+check1=sim(my_net,check)
