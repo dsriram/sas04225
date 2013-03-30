@@ -30,7 +30,7 @@ public class Main {
     static final String output_vector_csv ="C:/output_vectorsnew.csv";
     static final String test_vector_csv ="C:/output_testvectors.csv";
     
-    static final String WifiReadingsFolder = "H:/wifireadings/";
+    static final String WifiReadingsFolder = "H:/wifireadingsnew/";
 static final String testfolder = "H:/wifitestdata/";
 
     public static void get_vectors() throws IOException {
