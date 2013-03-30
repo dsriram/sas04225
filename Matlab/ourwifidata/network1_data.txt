@@ -1,0 +1,77 @@
+ network1
+
+network1 =
+
+    Neural Network
+ 
+              name: 'Custom Neural Network'
+        efficiency: .cacheDelayedInputs, .flattenTime,
+                    .memoryReduction
+          userdata: (your custom info)
+ 
+    dimensions:
+ 
+         numInputs: 1
+         numLayers: 2
+        numOutputs: 1
+    numInputDelays: 0
+    numLayerDelays: 0
+ numFeedbackDelays: 0
+ numWeightElements: 1897
+        sampleTime: 1
+ 
+    connections:
+ 
+       biasConnect: [1; 1]
+      inputConnect: [1; 0]
+      layerConnect: [0 0; 1 0]
+     outputConnect: [0 1]
+ 
+    subobjects:
+ 
+            inputs: {1x1 cell array of 1 input}
+            layers: {2x1 cell array of 2 layers}
+           outputs: {1x2 cell array of 1 output}
+            biases: {2x1 cell array of 2 biases}
+      inputWeights: {2x1 cell array of 1 weight}
+      layerWeights: {2x2 cell array of 1 weight}
+ 
+    functions:
+ 
+          adaptFcn: 'adaptwb'
+        adaptParam: (none)
+          derivFcn: 'defaultderiv'
+         divideFcn: 'dividerand'
+       divideParam: .trainRatio, .valRatio, .testRatio
+        divideMode: 'sample'
+           initFcn: 'initlay'
+        performFcn: 'sse'
+      performParam: .regularization, .normalization, .squaredWeighting
+          plotFcns: {'plotperform', plottrainstate,
+                    plotregression}
+        plotParams: {1x3 cell array of 0 params}
+          trainFcn: 'trainbr'
+        trainParam: .showWindow, .showCommandLine, .show, .epochs,
+                    .time, .goal, .min_grad, .max_fail, .mu, .mu_dec,
+                    .mu_inc, .mu_max
+ 
+    weight and bias values:
+ 
+                IW: {2x1 cell} containing 1 input weight matrix
+                LW: {2x2 cell} containing 1 layer weight matrix
+                 b: {2x1 cell} containing 2 bias vectors
+ 
+    methods:
+ 
+             adapt: Learn while in continuous use
+         configure: Configure inputs & outputs
+            gensim: Generate Simulink model
+              init: Initialize weights & biases
+           perform: Calculate performance
+               sim: Evaluate network outputs given inputs
+             train: Train network with examples
+              view: View diagram
+       unconfigure: Unconfigure inputs & outputs
+ 
+    evaluate:       outputs = network1(inputs)
+ 
