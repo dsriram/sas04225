@@ -221,6 +221,12 @@ get_test_vectors();
             writer.flush();
             writer.close();
         }
+         
+         java.io.ObjectOutputStream objos = new ObjectOutputStream(new FileOutputStream("C:/bssidsNlocids.hashtable"));
+         objos.writeObject(bssids);
+         objos.writeObject(loc_tag);
+         objos.flush();
+         objos.close();
 
 
     }
