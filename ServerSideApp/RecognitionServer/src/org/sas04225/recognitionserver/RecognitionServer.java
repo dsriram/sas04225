@@ -47,12 +47,5 @@ public class RecognitionServer {
         imgLUS.join();
         t.join();
         imgLUS.join();
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                bcknd.endProcess();
-            }
-        }));
     }
 }

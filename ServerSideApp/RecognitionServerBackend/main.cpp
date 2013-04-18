@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
     log<<"Loading descriptors from cache.."<<endl;
     t = (double) getTickCount();
     indexMat = Mat::zeros(msg.descriptor_count(), 64, CV_8UC1);
-    flann_index = new cv::flann::Index(indexMat, cv::flann::SavedIndexParams(msg.cache_path()), cvflann::FLANN_DIST_EUCLIDEAN);
+    flann_index = new cv::flann::Index(indexMat, cv::flann::SavedIndexParams(msg.cache_path()), cvflann::FLANN_DIST_HAMMING);
     t = ((double) getTickCount() - t) / getTickFrequency();
     log<<"Descriptors loaded. Took "<<t<<" s"<<endl;
     log.flush();
