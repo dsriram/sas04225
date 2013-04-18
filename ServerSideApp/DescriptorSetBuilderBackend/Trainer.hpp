@@ -22,7 +22,7 @@
 
 #include "MatchResultAnalytics.hpp"
 
-#define AGAST_PARAM 40,5
+#define AGAST_PARAM 30,5
 #define FREAK_PARAM true, true, 22.0f, 4
 #define SURF_PARAM 4000
 #define INDEX_PARAM cv::flann::LshIndexParams(2, 20, 2)

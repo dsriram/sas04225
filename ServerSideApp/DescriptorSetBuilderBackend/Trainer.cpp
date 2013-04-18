@@ -63,7 +63,7 @@ uint32_t Trainer::addImages(vector<string> files) {
     matcher.match(_img_descriptors, _descriptors_temp, matches);
     for (int i = 0; i < matches.size(); i++) {
         DMatch m = matches[i];
-        if (m.distance < 70) {
+        if (m.distance < 80) {
             _descriptors.push_back(_descriptors_temp.row(m.trainIdx));
             _descriptors.push_back(_img_descriptors.row(m.queryIdx));
         }

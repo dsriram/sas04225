@@ -12,9 +12,14 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,6 +79,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 	private WakeLock wl;
 	private volatile boolean prevRequestComplete = true;
 	private MulticastLock lock;
+	private String[] last5Results;
+	private int curAvgWindowPos;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 		Button buttonStartCameraPreview = (Button) findViewById(R.id.button1);
 		Button buttonStopCameraPreview = (Button) findViewById(R.id.button2);
 		grabFrame = false;
+		last5Results = new String[]{"Unknown","Unknown","Unknown","Unknown","Unknown"};
+		curAvgWindowPos = 0;
 		TextView res = (TextView)findViewById(R.id.textView1);
 		res.setTextColor(Color.WHITE);
 		queries = new LinkedBlockingQueue<Query>();
@@ -301,7 +310,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			
 			
 			Log.i("Result", "Query ID: "+r.getRequestId() );
-			Log.v("Result", r.toString());
+			Log.i("Result", r.toString());
 			ArrayList<String> tags = new ArrayList<String>();
 			int index = 0,max=-1,maxIndex=-1;
 			for(Tag tag : r.getTagsList()) {
@@ -310,7 +319,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 					lastResult = "Unknown";
 					break;
 				}
-				if(tag.getCount() >= 5){
+				if(tag.getCount() >= 10){
 					if(Math.max(max, tag.getCount()) != max) {
 						max = Math.max(max, tag.getCount());
 						maxIndex = index;
@@ -326,8 +335,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			else{
 				lastResult = "Unknown";
 			}
+			String avgdResult = doAverage(lastResult);
 			TextView res = (TextView)findViewById(R.id.textView1);
-			res.setText(lastResult);
+			res.setText(avgdResult);
 			prevRequestComplete = true;
 			/*findViewById(R.id.surfaceview).postDelayed(new Runnable() {
 
@@ -336,6 +346,34 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 					client = new RecognitionServerClient(serverAddr);
 					client.execute(new Void[]{});					
 				}}, 250);*/
+		}
+		
+		private String doAverage(String currentTag) {
+			if(curAvgWindowPos >4)
+				curAvgWindowPos = 0;
+			last5Results[curAvgWindowPos] = currentTag;
+			curAvgWindowPos++;
+			HashMap<String, java.util.concurrent.atomic.AtomicInteger> count = new HashMap<String, AtomicInteger>();
+			for(String str : last5Results) {
+				AtomicInteger intg = count.get(str);
+				int val;
+				if(intg == null)
+					intg = new AtomicInteger(1);
+				else
+					val = intg.incrementAndGet();
+				count.put(str, intg);
+			}
+			String maxTag = "Unknown";
+//			int maxCount = 1;
+			for(Map.Entry<String, AtomicInteger> entry : count.entrySet()) {
+				String tag = entry.getKey();
+				int val = entry.getValue().get();
+				if(val>3) {
+					maxTag = tag;
+					break;
+				}
+			}
+			return maxTag;
 		}
 
 	}
