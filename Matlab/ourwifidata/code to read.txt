@@ -1,0 +1,37 @@
+h=csvread('H:\ourwifidata\output_vectorsnew.csv');
+h=abs(h);
+targets=h(:,2);
+h=h(:,3:79);
+targets=targets/100;
+targets=targets';
+for i=1:53
+for j=1:77
+if h(i,j)==0
+h(i,j)=100;
+end
+end
+end
+h=100-h;
+h=h/100;
+inputs=h;
+
+h=csvread('H:\ourwifidata\output_testvectors.csv');
+testtargets=h(:,1);
+testtargets=testtargets/100;
+h=h(:,2:78);
+for i=1:25
+for j=1:77
+if h(i,j)==0
+h(i,j)=100;
+end
+end
+end
+h=abs(h)
+h=100-h;
+h=h/100;
+testinputs=h;
+
+
+testinputs=testinputs';
+inputs=inputs';
+ testtargets=testtargets';
