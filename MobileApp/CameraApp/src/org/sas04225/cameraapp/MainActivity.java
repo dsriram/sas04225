@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import org.sas04225.proto.RecognitionServerResultProto.Tag;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
@@ -41,6 +41,8 @@ import android.hardware.Camera.Size;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -69,6 +71,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 	private InetSocketAddress serverAddr; 
 	private RecognitionServerClient client;
 	private String lastResult = "";
+	private WakeLock wl;
+	private volatile boolean prevRequestComplete = true;
+	private MulticastLock lock;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 		res.setTextColor(Color.WHITE);
 		queries = new LinkedBlockingQueue<Query>();
 		t0 = new Timer("FrameGrab");
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
 		t0_task = new TimerTask() {
 
 			@Override
@@ -128,6 +135,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 									params.setVideoStabilization(true);
 									camera.setParameters(params);
 									preview = true;
+									wl.acquire();
 									t0.scheduleAtFixedRate(new TimerTask() {
 
 										@Override
@@ -135,7 +143,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 											grabFrame = true;
 											Log.d("TimerTask", "Task triggered");
 										}
-									}, 1000, 700);
+									}, 0, 100);
 								} catch (IOException e) {
 									Logger.getLogger(
 											MainActivity.class.getName()).log(
@@ -160,7 +168,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 							t0.cancel();
 							t0.purge();
 							t0 = new Timer("FrameGrab");
-							//camera.release();
+							wl.release();
 						}
 
 					}
@@ -194,7 +202,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 
 	@Override
 	public void onPreviewFrame(byte[] data, Camera camera) {
-		if (grabFrame&&serverFound) {
+		if (grabFrame&&serverFound&&prevRequestComplete) {
 			Size s = camera.getParameters().getPreviewSize();
 			if (previewFormat == ImageFormat.NV21) {
 				Rect rect = new Rect(0, 0, s.width, s.height);
@@ -214,6 +222,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 					try {
 						queries.put(q);
 						Log.d("onPreviewFrame", "added to queue");
+						prevRequestComplete = false;
 						client = new RecognitionServerClient(serverAddr);
 						client.execute(new Void[]{});
 					} catch (InterruptedException e) {
@@ -234,6 +243,16 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			}
 		}
 
+	}
+	
+	@Override
+	protected void onStop() {
+		if(wl.isHeld())
+			wl.release();
+		if(lock.isHeld())
+			lock.release();
+		camera.release();
+		super.onStop();
 	}
 
 	private class RecognitionServerClient extends AsyncTask<Void, Void, Void> {
@@ -282,6 +301,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			
 			
 			Log.i("Result", "Query ID: "+r.getRequestId() );
+			Log.v("Result", r.toString());
 			ArrayList<String> tags = new ArrayList<String>();
 			int index = 0,max=-1,maxIndex=-1;
 			for(Tag tag : r.getTagsList()) {
@@ -290,7 +310,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 					lastResult = "Unknown";
 					break;
 				}
-				if(tag.getCount() >= 7){
+				if(tag.getCount() >= 5){
 					if(Math.max(max, tag.getCount()) != max) {
 						max = Math.max(max, tag.getCount());
 						maxIndex = index;
@@ -308,6 +328,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 			}
 			TextView res = (TextView)findViewById(R.id.textView1);
 			res.setText(lastResult);
+			prevRequestComplete = true;
 			/*findViewById(R.id.surfaceview).postDelayed(new Runnable() {
 
 				@Override
@@ -323,7 +344,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
 
 		public final long TIMEOUT = 60000;
 
-		private MulticastLock lock;
 		private JmDNS jmDNS;
 		private String serviceType;
 		public ServiceInfo info;

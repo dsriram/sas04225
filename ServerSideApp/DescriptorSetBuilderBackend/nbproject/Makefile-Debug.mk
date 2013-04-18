@@ -43,11 +43,11 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-O3
+CFLAGS=-O3 -parallel -static-intel
 
 # CC Compiler Flags
-CCFLAGS=-O3
-CXXFLAGS=-O3
+CCFLAGS=-O3 -parallel -static-intel
+CXXFLAGS=-O3 -parallel -static-intel
 
 # Fortran Compiler Flags
 FFLAGS=

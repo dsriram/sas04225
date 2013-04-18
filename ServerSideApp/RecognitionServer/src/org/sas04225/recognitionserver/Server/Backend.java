@@ -112,4 +112,14 @@ public class Backend {
     public void endProcess() {
         p.destroy();
     }
+    
+    /**
+     *
+     * @throws Throwable
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        endProcess();
+    }
 }

@@ -47,10 +47,10 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <commandLine>-O3</commandLine>
+          <commandLine>-O3 -parallel -static-intel</commandLine>
         </cTool>
         <ccTool>
-          <commandLine>-O3</commandLine>
+          <commandLine>-O3 -parallel -static-intel</commandLine>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

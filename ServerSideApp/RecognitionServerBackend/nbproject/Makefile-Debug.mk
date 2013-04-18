@@ -43,11 +43,11 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-m64 -O3 -parallel -openmp
+CFLAGS=-m64 -O3 -parallel -openmp -static-intel
 
 # CC Compiler Flags
-CCFLAGS=-m64 -O3 -parallel -openmp
-CXXFLAGS=-m64 -O3 -parallel -openmp
+CCFLAGS=-m64 -O3 -parallel -openmp -static-intel
+CXXFLAGS=-m64 -O3 -parallel -openmp -static-intel
 
 # Fortran Compiler Flags
 FFLAGS=

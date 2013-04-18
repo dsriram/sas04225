@@ -53,12 +53,12 @@
       <compileType>
         <cTool>
           <architecture>2</architecture>
-          <commandLine>-O3 -parallel -openmp</commandLine>
+          <commandLine>-O3 -parallel -openmp -static-intel</commandLine>
         </cTool>
         <ccTool>
           <architecture>2</architecture>
           <standard>8</standard>
-          <commandLine>-O3 -parallel -openmp</commandLine>
+          <commandLine>-O3 -parallel -openmp -static-intel</commandLine>
         </ccTool>
         <asmTool>
           <architecture>2</architecture>
