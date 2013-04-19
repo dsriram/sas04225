@@ -32,10 +32,11 @@ public class neural {
      
     
     @SuppressWarnings("empty-statement")
-   static void neural()
+   static void neural() throws FileNotFoundException
     {
         
-     l1_w=new double[][]{{2.0715,3.3872,0.6497,1.2511,-3.4471,-1.2762,0.1544,-1.1959,-2.1662,0.48264,0.92709,0.72834,-1.7829,-
+      
+    /* l1_w=new double[][]{{2.0715,3.3872,0.6497,1.2511,-3.4471,-1.2762,0.1544,-1.1959,-2.1662,0.48264,0.92709,0.72834,-1.7829,-
 3.08,1.707,-0.78552,1.4531,0.54155,-1.7435,2.7915,-2.1664,-1.6474,0.12499,-1.099,-1.03,-
 0.10942,0.21397,2.2347,1.935,-0.72064,-2.3017,-1.0237,1.1999,-0.31825,2.1947,-1.1054,-
 0.18626,1.1058,0.17714,-1.4101,-2.2883,-1.4616,1.8001,-0.5837,-1.1783,-1.9114,-3.6961,-4.7443,-1.197,-
@@ -206,16 +207,18 @@ public class neural {
  0.0063856,
  1.1701};
                 l2_bias=0.37335;
+                * */
     }
     static void condition(float[] vector )
     {
-        vector = new float[100];
+        //vector = new float[100];
     for(int i=0;i< size;i++)
     {
     if(vector[i]!=0)
     {vector[i]=100-Math.abs(vector[i]);
     vector[i]=vector[i]/100;
     }
+    
     }
    //  System.out.println("vector:"+vector);
     simulate(vector);
@@ -235,9 +238,11 @@ public class neural {
         sum1[i]=sum1[i]+l1_bias[i];//add tansig func here
         
         sum1[i]=Math.exp(sum1[i]*(-1))+1;
+        
         sum1[i]=Math.pow(sum1[i], -1);
         
     }
+   
     for(int i=0;i<l2_size;i++)
     {
        
@@ -247,11 +252,14 @@ public class neural {
     sum2=sum2+l2_bias;//add tansig fnc its outtpput
     sum2=Math.exp(sum2*(-1))+1;
         sum2=Math.pow(sum2, -1);
-       
+      
     out=(int) (sum2*100);//loc_tag output
+   
     if (loc_tag_revese.containsKey(out)) {
               outputstring = loc_tag_revese.get(out);
-System.out.println("Location :"+ out+outputstring);
+             
+System.out.println("Location found!:"+ out+outputstring);
+ System.out.println();
     } 
     } 
     
@@ -259,11 +267,11 @@ System.out.println("Location :"+ out+outputstring);
        float[] vector = new float[100];
                List<AccessPoint> accsPts = results.getResultList();
                //this s only for testing
-               System.out.println();
+              
             String location = results.getLocationTag();
       System.out.println("Actual Location :"+ location);
             if (loc_tag.containsKey(location)) {
-               System.out.println("tag"+ loc_tag.get(location));
+               //System.out.println("tag"+ loc_tag.get(location));
             }
                
                //till here
@@ -273,7 +281,7 @@ System.out.println("Location :"+ out+outputstring);
                     vector[bssids.get(pt.getBssid())] = (pt.getLevel());
                 }
             }
-            condition(vector);
+           condition(vector);
      }
 
      static void test_prg() throws IOException
@@ -288,7 +296,7 @@ System.out.println("Location :"+ out+outputstring);
             while ((res = reader.nextResult()) != null) {
                             
 get_vectors(res);
-   System.out.println(res);
+   //System.out.println(res);
             }
     }
     }
